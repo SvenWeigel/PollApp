@@ -5,15 +5,19 @@ main{
 
 h1{
     font-family: "Nerko_One", sans-serif;
-    font-size: 48px;
-    line-height: 62px;
+    font-weight: 400;
+    font-size: 100px;
+    line-height: 89px;
+    margin: 0;
+    margin-bottom: 24px;
     color: var(--color--primary);
 }
 
 .description-span{
     font-family: "Mulish", sans-serif;
-    font-size: 18px;
-    line-height: 28px;
+    font-size: 24px;
+    line-height: 100%;
+    margin: 0 0 40px 0;
 }
 
 .description-content{
