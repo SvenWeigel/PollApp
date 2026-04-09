@@ -1,1 +1,36 @@
 /* You can add global styles to this file, and also import other style files */
+:root{
+    --color--background: rgba(53, 39, 58, 1);
+    --color--primary: rgba(255, 183, 112, 1);
+}
+
+:root{
+    --home--margin-l-r: 111px;
+}
+
+@font-face {
+    font-family: "Mulish";
+    src: url(./assets/fonts/Mulish/Mulish-VariableFont_wght.ttf) format('truetype');
+}
+
+@font-face {
+    font-family: "Nerko_One";
+    src: url(./assets/fonts/Nerko_One/NerkoOne-Regular.ttf) format('truetype');
+}
+
+@font-face {
+    font-family: "Nokora";
+    src: url(./assets/fonts/Nokora/Nokora-VariableFont_wght.ttf) format('truetype');
+}
+
+body{
+    background-color: var(--color--background);
+    margin: 0;
+    font-family: "Mulish", sans-serif;
+    color: white;
+}
+
+.content{
+    max-width: 1440px;
+    margin: 0 auto;
+}

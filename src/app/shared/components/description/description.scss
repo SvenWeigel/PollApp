@@ -1,0 +1,29 @@
+main{
+    display: flex;
+    margin: var(--home--margin-l-r)
+}
+
+h1{
+    font-family: "Nerko_One", sans-serif;
+    font-size: 48px;
+    line-height: 62px;
+    color: var(--color--primary);
+}
+
+.description-span{
+    font-family: "Mulish", sans-serif;
+    font-size: 18px;
+    line-height: 28px;
+}
+
+.description-content{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.description-text-btn{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
