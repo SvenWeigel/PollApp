@@ -1,6 +1,9 @@
 main{
     display: flex;
-    margin: var(--home--margin-l-r)
+    gap: 32px;
+    margin: var(--home--margin-l-r);
+    justify-content: space-between;
+    margin-bottom: 90px;
 }
 
 h1{
@@ -10,7 +13,7 @@ h1{
     line-height: 89px;
     margin: 0;
     margin-bottom: 24px;
-    color: var(--color--primary);
+    color: var(--color--p-o);
 }
 
 .description-span{
@@ -18,6 +21,7 @@ h1{
     font-size: 24px;
     line-height: 100%;
     margin: 0 0 40px 0;
+    max-width: 666px;
 }
 
 .description-content{
@@ -30,4 +34,8 @@ h1{
     display: flex;
     flex-direction: column;
     gap: 20px;
+}
+
+.phone-img{
+    width: 420px;
 }
