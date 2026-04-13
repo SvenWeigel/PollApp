@@ -14,3 +14,27 @@ h2{
     margin: 0;
     color: var(--color--p-o);
 }
+
+span{
+    font-family: "Mulish", sans-serif;
+    font-weight: 500;
+    font-size: 32px;
+    line-height: 100%;
+    margin-bottom: 32px;
+}
+
+.soon-ending-surveys{
+    display: flex;
+    gap: 32px;
+    justify-content: center;
+}
+
+.ending{
+    background-color: white;
+    width: 321px;
+    height: 310px;
+    border-top-right-radius: 80px;
+    padding: 40px 18px 40px 18px;
+    color: black;
+}
+

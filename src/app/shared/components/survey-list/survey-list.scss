@@ -1,0 +1,49 @@
+main{
+    display: flex;
+    flex-direction: column;
+    margin: 0 199px 32px 199px;
+}
+
+.survey-list-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+
+    &--btn{
+        display: flex;
+        gap: 24px;
+    }
+
+    &--sort{
+        select{
+            background-color: transparent;
+            border: none;
+            color: white;
+            padding: 2px 10px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        select option{
+            background-color: white;
+            color: black;
+        }
+    }
+}
+
+.survey-list{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    max-height: 413px;
+    overflow-y: auto;
+}
+
+.survey-btn{
+    background-color: var(--color--s-o);
+    border: none;
+    color: black;
+    padding: 2px 10px;
+    border-radius: 20px;
+    cursor: pointer;
+}

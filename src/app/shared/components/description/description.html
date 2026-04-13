@@ -7,7 +7,7 @@
         </div>
     </div>
 
-        <div class="description-image">
-            <img class="phone-img" src="./assets/mobile-phone.svg" alt="Mobile Phone">
+        <div class="description-image" (mouseenter)="onImageEnter()" (mouseleave)="onImageLeave()">
+            <img class="phone-img" [src]="phoneImageSrc()" alt="Mobile Phone">
         </div>
 </main>
