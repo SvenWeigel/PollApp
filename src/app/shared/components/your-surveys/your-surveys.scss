@@ -1,8 +1,12 @@
 main{
     display: flex;
     flex-direction: column;
-    margin: 0 199px 32px 199px;
+    margin-bottom: 32px;
+}
 
+.surveys-group{
+    width: fit-content;
+    margin: 0 auto;
 }
 
 h2{
@@ -15,18 +19,20 @@ h2{
     color: var(--color--p-o);
 }
 
-span{
+.ending-span{
+    display: block;
     font-family: "Mulish", sans-serif;
     font-weight: 500;
     font-size: 32px;
     line-height: 100%;
     margin-bottom: 32px;
+    
 }
 
 .soon-ending-surveys{
     display: flex;
     gap: 32px;
-    justify-content: center;
+    justify-content: flex-start;
 }
 
 .ending{
