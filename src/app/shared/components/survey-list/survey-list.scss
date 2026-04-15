@@ -1,6 +1,7 @@
 main {
   display: flex;
   flex-direction: column;
+  margin-bottom: 166px;
 }
 
 .survey-list-header {
@@ -36,7 +37,7 @@ main {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 16px;
-  max-height: 450px;
+  max-height: 510px;
   overflow-y: scroll;
   max-width: 1150px;
   margin: 0 auto;

@@ -1,13 +1,14 @@
 import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterLink, RouterOutlet } from '@angular/router';
 import { Header } from "./shared/components/header/header";
 import { Description } from "./shared/components/description/description";
 import { YourSurveys } from "./shared/components/your-surveys/your-surveys";
 import { SurveyList } from "./shared/components/survey-list/survey-list";
+import { Landingpage } from './pages/landingpage/landingpage';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Header, Description, YourSurveys, SurveyList],
+  imports: [RouterOutlet, Header, Description, YourSurveys, SurveyList, RouterLink, Landingpage],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

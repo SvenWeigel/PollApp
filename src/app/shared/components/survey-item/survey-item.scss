@@ -9,17 +9,19 @@
     align-items: flex-start;
     text-align: left;
     cursor: pointer;
-}
+    height: 127px;
 
-.head-span{
+
+    &--head{
     color: var(--color--s-o);
-}
+    }
 
-.time-left{
-    align-self: flex-end;
-    font-size: 12px;
-    color: black;
-    background-color: var(--color--s-o);
-    padding: 3px 6px 3px 6px;
-    border-top-right-radius: 14px;
+    &--time-left{
+        align-self: flex-end;
+        font-size: 12px;
+        color: black;
+        background-color: var(--color--s-o);
+        padding: 3px 6px 3px 6px;
+        border-top-right-radius: 14px;
+    }
 }
