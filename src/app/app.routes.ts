@@ -8,7 +8,7 @@ export const routes: Routes = [
         component: Landingpage,
     },
     {
-        path: "newservey",
+        path: "newsurvey",
         component: Newservey,
     }
 ];

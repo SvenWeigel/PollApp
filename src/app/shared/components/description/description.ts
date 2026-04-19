@@ -1,9 +1,10 @@
 import { Component, signal } from '@angular/core';
 import { Buttons } from '../buttons/buttons';
+import { RouterLink } from "@angular/router";
 
 @Component({
   selector: 'app-description',
-  imports: [Buttons],
+  imports: [Buttons, RouterLink],
   templateUrl: './description.html',
   styleUrl: './description.scss',
 })
@@ -21,7 +22,4 @@ export class Description {
     this.phoneImageSrc.set(this.defaultPhoneImage);
   }
 
-  newServey(): void {
-    window.location.href = '/newservey';
-  }
 }

@@ -1,46 +1,75 @@
-main{
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 32px;
+main {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 32px;
 }
 
-.surveys-group{
-    width: fit-content;
-    margin: 0 auto;
+.surveys-group {
+  width: fit-content;
+  margin: 0 auto;
 }
 
-h2{
-    text-align: center;
-    font-family: "Nerko_One", sans-serif;
-    font-weight: 400;
-    font-size: 72px;
-    line-height: 100%;
-    margin: 0;
-    color: var(--color--p-o);
+h2 {
+  text-align: center;
+  font-family: 'Nerko_One', sans-serif;
+  font-weight: 400;
+  font-size: 72px;
+  line-height: 100%;
+  margin: 0;
+  color: var(--color--p-o);
 }
 
-.ending-span{
-    display: block;
-    font-family: "Mulish", sans-serif;
-    font-weight: 500;
-    font-size: 32px;
-    line-height: 100%;
-    margin-bottom: 32px;
-    
+.ending-span {
+  display: block;
+  font-family: 'Mulish', sans-serif;
+  font-weight: 500;
+  font-size: 32px;
+  line-height: 100%;
+  margin-bottom: 32px;
 }
 
-.soon-ending-surveys{
-    display: flex;
-    gap: 32px;
-    justify-content: flex-start;
+.soon-ending-surveys {
+  display: flex;
+  gap: 32px;
+  justify-content: flex-start;
 }
 
-.ending{
-    background-color: white;
-    width: 321px;
-    height: 310px;
-    border-top-right-radius: 80px;
-    padding: 40px 18px 40px 18px;
-    color: black;
+.ending-items {
+  display: flex;
+  width: 321px;
+  height: 310px;
+  background-color: white;
+  padding: 40px 18px 40px 18px;
+  border-top-right-radius: 80px;
 }
 
+.ending {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  color: black;
+  cursor: pointer;
+}
+
+.ending span {
+  font-family: 'Mulish', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.ending h3 {
+  font-family: 'Mulish', serif;
+  font-weight: 700;
+  font-size: 26px;
+}
+
+.ending p {
+  font-family: 'Mulish', sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  margin-top: auto;
+  background-color: var(--color--s-o);
+  align-self: flex-start;
+  padding: 3px 6px 3px 6px;
+  border-top-right-radius: 14px;
+}
