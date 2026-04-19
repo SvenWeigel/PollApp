@@ -20,4 +20,8 @@ export class Description {
   onImageLeave(): void {
     this.phoneImageSrc.set(this.defaultPhoneImage);
   }
+
+  newServey(): void {
+    window.location.href = '/newservey';
+  }
 }

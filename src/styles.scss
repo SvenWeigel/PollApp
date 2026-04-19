@@ -10,6 +10,10 @@
     --home--margin-l-r: 111px;
 }
 
+*{
+    scroll-behavior: smooth;
+}
+
 @font-face {
     font-family: "Mulish";
     src: url('/assets/fonts/Mulish/Mulish-VariableFont_wght.ttf') format('truetype');
