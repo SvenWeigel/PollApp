@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
 
 @Component({
   selector: 'app-buttons',
@@ -6,4 +6,6 @@ import { Component } from '@angular/core';
   templateUrl: './buttons.html',
   styleUrl: './buttons.scss',
 })
-export class Buttons {}
+export class Buttons {
+  readonly buttonText = input<string>('New survey');
+}

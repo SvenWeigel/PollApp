@@ -1,0 +1,32 @@
+main {
+    padding: 40px 54px 40px 54px;
+    margin: 72px 165px 108px 109px;
+    background-color: var(--color--background);
+    border-top-right-radius: 100px;
+    border-top-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+span {
+    font-family: "Mulish", sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: #221227;
+    background-color: var(--color--s-o);
+    padding: 3px 12px 3px 8px;
+    border-top-right-radius: 14px;
+}
+
+.newsurvey-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &--h2 {
+    font-family: "Nerko_One", sans-serif;
+    font-size: 56px;
+    font-weight: 400;
+    color: #EE9236;
+  }
+}
