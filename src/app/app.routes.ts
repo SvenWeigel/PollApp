@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { Landingpage } from './pages/landingpage/landingpage';
-import { Newservey } from './pages/newservey/newservey';
+import { Newsurvey } from './pages/newsurvey/newsurvey';
 
 export const routes: Routes = [
     {
@@ -9,6 +9,6 @@ export const routes: Routes = [
     },
     {
         path: "newsurvey",
-        component: Newservey,
+        component: Newsurvey,
     }
 ];
