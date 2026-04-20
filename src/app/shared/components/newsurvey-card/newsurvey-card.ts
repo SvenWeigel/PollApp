@@ -3,7 +3,7 @@ import { NewsurveyCardHeader } from "../newsurvey-card-header/newsurvey-card-hea
 
 @Component({
   selector: 'app-newsurvey-card',
-  imports: [NewsurveyCardHeader],
+  imports: [NewsurveyCardHeader,],
   templateUrl: './newsurvey-card.html',
   styleUrl: './newsurvey-card.scss',
 })
