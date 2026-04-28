@@ -1,0 +1,47 @@
+button{
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+main{
+    display: flex;
+    flex-direction: column;
+    max-width: 429px;
+    margin-top: 64px;
+}
+
+.form-top-question{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    flex: 0 0 50%;
+}
+
+.answer-form-body{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.center-inputs{
+    display: flex;
+    align-items: center;
+}
+
+.center-inputs p{
+    margin: 0;
+    width: 24px;
+    flex: 0 0 24px;
+}
+
+.center-inputs app-input-field{
+    flex: 1 1 auto;
+}
+
+.answer-form-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

@@ -5,10 +5,19 @@ main{
     border-top-left-radius: 5px;
     border-bottom-right-radius: 5px;
     border-bottom-left-radius: 5px;
+    color: white;
 }
 
 .form-top{
     display: flex;
     justify-content: space-between;
     margin-bottom: 24px;
+    gap: 34px;
+}
+
+.form-top--left,
+.form-top--right
+{
+    flex: 0 0 50%;
+    box-sizing: border-box;
 }

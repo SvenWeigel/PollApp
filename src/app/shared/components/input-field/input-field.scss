@@ -1,0 +1,26 @@
+input{ 
+    height: 37px; 
+    width: 100%;
+    max-width: 429px;
+    border-top-right-radius: 20px;
+    border-top-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    padding: 7px 13px 7px 13px;
+    
+}
+
+.input-fields{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+img{
+    cursor: pointer;
+}
+
+button{
+    background: none;
+    border: none;
+}

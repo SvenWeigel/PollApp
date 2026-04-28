@@ -1,0 +1,36 @@
+<main>
+  <div class="form-top-question">
+    <span>1. Question</span>
+    <button><img src="../assets/Delete.svg" alt="Delete" /></button>
+  </div>
+  <div class="form-bottom-question">
+    <app-input-field [showIcon]="false" inputWidth="100%" inputMaxWidth="none"></app-input-field>
+  </div>
+  <div class="answer-form">
+    <div class="answer-form-header">
+      <p>Answer</p>
+      <div>
+        <input type="checkbox" name="answer" id="answer" />
+        <span>Allow multiple answers.</span>
+      </div>
+    </div>
+    <div class="answer-form-body">
+      <div class="center-inputs">
+        <p>A.</p>
+        <app-input-field [showIcon]="true" inputWidth="100%" inputMaxWidth="none"></app-input-field>
+      </div>
+      <div class="center-inputs">
+        <p>B.</p>
+        <app-input-field [showIcon]="true" inputWidth="100%" inputMaxWidth="none"></app-input-field>
+      </div>
+      <div class="center-inputs">
+        <p>C.</p>
+        <app-input-field [showIcon]="true" inputWidth="100%" inputMaxWidth="none"></app-input-field>
+      </div>
+      <div class="center-inputs">
+        <p>D.</p>
+        <app-input-field [showIcon]="true" inputWidth="100%" inputMaxWidth="none"></app-input-field>
+      </div>
+    </div>
+  </div>
+</main>

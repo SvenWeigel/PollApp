@@ -1,0 +1,26 @@
+textarea{
+    width: 100%;
+    max-width: 418px;
+    height: 108px;
+    max-height: 143px;
+    border-top-right-radius: 20px;
+    border-top-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    padding: 7px 13px 7px 13px;
+}
+
+.text-area{
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+img{
+    cursor: pointer;
+}
+
+button{
+    background: none;
+    border: none;
+}

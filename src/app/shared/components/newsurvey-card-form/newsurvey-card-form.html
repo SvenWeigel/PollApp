@@ -2,14 +2,16 @@
     <div class="form-top">
         <div class="form-top--left">
             <h3>Survey name</h3>
-            <input type="text" class="form-top--left-input">
+            <app-input-field class="form-top--left-input"></app-input-field>
             <h3>Set end date (optional)</h3>
-            <input type="text" class="form-top--left-input">
+            <app-input-field [inputMaxWidth]="'220px'" class="form-top--left-input"></app-input-field>
         </div>
         <div class="form-top--right">
             <h3>Description text (optional)</h3>
-            <textarea name="" id=""></textarea>
+            <app-text-area class="form-top--right-textarea"></app-text-area>
         </div>
     </div>
-    <div class="form-bottom"></div>
+    <div class="form-bottom">
+        <app-question-form></app-question-form>
+    </div>
 </main>
