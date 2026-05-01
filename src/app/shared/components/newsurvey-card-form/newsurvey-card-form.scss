@@ -21,3 +21,41 @@ main{
     flex: 0 0 50%;
     box-sizing: border-box;
 }
+
+.form-bottom{
+    margin-top: 64px;
+}
+
+.form-bottom--content{
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+}
+
+.form-bottom--content app-question-form{
+    flex: 0 0 429px;
+    max-width: 429px;
+}
+
+.form-bottom--content app-buttons{
+    align-self: flex-start;
+    margin-left: 72px;
+}
+
+@media (max-width: 800px){
+    .form-bottom--content{
+        flex-direction: column;
+        gap: 16px;
+    }
+    .form-bottom--content app-question-form{
+        flex: 1 1 auto;
+        width: 100%;
+        max-width: none;
+    }
+    .form-bottom--content app-buttons{
+        margin-left: 0;
+        align-self: flex-start;
+    }
+}
+
+

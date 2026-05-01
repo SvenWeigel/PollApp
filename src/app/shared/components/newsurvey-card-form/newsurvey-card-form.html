@@ -1,17 +1,20 @@
 <main>
-    <div class="form-top">
-        <div class="form-top--left">
-            <h3>Survey name</h3>
-            <app-input-field class="form-top--left-input"></app-input-field>
-            <h3>Set end date (optional)</h3>
-            <app-input-field [inputMaxWidth]="'220px'" class="form-top--left-input"></app-input-field>
-        </div>
-        <div class="form-top--right">
-            <h3>Description text (optional)</h3>
-            <app-text-area class="form-top--right-textarea"></app-text-area>
-        </div>
+  <div class="form-top">
+    <div class="form-top--left">
+      <h3>Survey name</h3>
+      <app-input-field class="form-top--left-input"></app-input-field>
+      <h3>Set end date (optional)</h3>
+      <app-input-field [inputMaxWidth]="'220px'" class="form-top--left-input"></app-input-field>
     </div>
-    <div class="form-bottom">
-        <app-question-form></app-question-form>
+    <div class="form-top--right">
+      <h3>Description text (optional)</h3>
+      <app-text-area class="form-top--right-textarea"></app-text-area>
     </div>
+  </div>
+  <div class="form-bottom">
+    <div class="form-bottom--content">
+      <app-question-form></app-question-form>
+      <app-buttons [buttonText]="' + Add Question'"></app-buttons>
+    </div>
+  </div>
 </main>
