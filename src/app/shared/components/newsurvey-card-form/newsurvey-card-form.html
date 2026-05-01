@@ -3,7 +3,15 @@
     <div class="form-top--left">
       <h3>Survey name</h3>
       <app-input-field class="form-top--left-input"></app-input-field>
-      <h3>Set end date (optional)</h3>
+      <div class="form-top--left-end-date">
+        <h3>Set end date (optional)</h3>
+        <select class="form-top--left-select">
+          <option value="" disabled selected>Choose category</option>
+          <option value="1">after work</option>
+          <option value="7">activity</option>
+          <option value="30">other</option>
+        </select>
+      </div>
       <app-input-field [inputMaxWidth]="'220px'" class="form-top--left-input"></app-input-field>
     </div>
     <div class="form-top--right">

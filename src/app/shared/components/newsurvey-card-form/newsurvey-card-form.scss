@@ -42,6 +42,25 @@ main{
     margin-left: 72px;
 }
 
+.form-top--left-end-date{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+select{
+    background-color: transparent;
+    color: white;
+    border: none;
+    height: 40px;
+}
+
+select option{
+    background-color: #43334A;
+    border: none;
+}
+
+
 @media (max-width: 800px){
     .form-bottom--content{
         flex-direction: column;
