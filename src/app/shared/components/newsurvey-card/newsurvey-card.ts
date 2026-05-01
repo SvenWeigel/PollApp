@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { NewsurveyCardHeader } from "../newsurvey-card-header/newsurvey-card-header";
 import { NewsurveyCardForm } from "../newsurvey-card-form/newsurvey-card-form";
+import { Buttons } from "../buttons/buttons";
 
 @Component({
   selector: 'app-newsurvey-card',
-  imports: [NewsurveyCardHeader, NewsurveyCardForm],
+  imports: [NewsurveyCardHeader, NewsurveyCardForm, Buttons],
   templateUrl: './newsurvey-card.html',
   styleUrl: './newsurvey-card.scss',
 })
