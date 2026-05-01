@@ -1,51 +1,67 @@
-button{
-    background: none;
-    border: none;
-    cursor: pointer;
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 
-main{
-    display: flex;
-    flex-direction: column;
-    max-width: 429px;
-    margin-top: 0;
+main {
+  display: flex;
+  flex-direction: column;
+  max-width: 429px;
+  margin-top: 0;
 }
 
-.form-top-question{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 16px;
-    flex: 0 0 50%;
+.form-top-question {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  flex: 0 0 50%;
 }
 
-.answer-form-body{
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+.answer-form-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
-.center-inputs{
-    display: flex;
-    align-items: center;
+.center-inputs {
+  display: flex;
+  align-items: center;
 }
 
-.center-inputs p{
-    margin: 0;
-    width: 24px;
-    flex: 0 0 24px;
+.center-inputs p {
+  margin: 0;
+  width: 24px;
+  flex: 0 0 24px;
 }
 
-.center-inputs app-input-field{
-    flex: 1 1 auto;
+.center-inputs app-input-field {
+  flex: 1 1 auto;
 }
 
-.answer-form-header{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.answer-form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.form-bottom-question{
-    width: 429px;
+.form-bottom-question {
+  width: 429px;
+}
+
+
+
+.add-answer-btn {
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: white;
+  text-decoration: none;
+  border-bottom: 2px solid currentColor;
+  padding-bottom: 2px;
+  font-family: "Nokora", sans-serif;
+  font-size: 16px;
+  font-weight: 700;
 }
