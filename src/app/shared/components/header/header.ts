@@ -1,9 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { Buttons } from '../buttons/buttons';
 
 @Component({
   selector: 'app-header',
-  imports: [],
+  imports: [Buttons],
   templateUrl: './header.html',
   styleUrl: './header.scss',
 })
-export class Header {}
+export class Header {
+  @Input() showButton: boolean = true;
+  @Input() buttonText: string = 'New survey';
+}

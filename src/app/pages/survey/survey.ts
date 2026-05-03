@@ -1,8 +1,10 @@
 import { Component, DOCUMENT, inject, OnDestroy, OnInit } from '@angular/core';
+import { Header } from '../../shared/components/header/header';
+import { Buttons } from '../../shared/components/buttons/buttons';
 
 @Component({
   selector: 'app-survey',
-  imports: [],
+  imports: [Header, Buttons],
   templateUrl: './survey.html',
   styleUrl: './survey.scss',
 })

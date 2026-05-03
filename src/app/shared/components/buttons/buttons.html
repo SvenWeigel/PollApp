@@ -1,1 +1,3 @@
-<button class="new-survey-btn" id="new-survey-btn">{{ buttonText() }}</button>
+@if (showButton()) {
+  <button class="new-survey-btn" id="new-survey-btn">{{ buttonText() }}</button>
+}

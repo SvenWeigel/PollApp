@@ -8,4 +8,5 @@ import { Component, input } from '@angular/core';
 })
 export class Buttons {
   readonly buttonText = input<string>('New survey');
+  readonly showButton = input<boolean>(true);
 }
