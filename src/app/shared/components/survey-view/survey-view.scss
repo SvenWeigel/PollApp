@@ -1,0 +1,23 @@
+main {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.survey-view-left {
+    background-color: #bd3e3e;
+    width: 70%;
+    height: 100%;
+    margin-left: 110px;
+    border-top-right-radius: 160px;
+
+}   
+
+.survey-view-right {
+    background-color: #312fa1;
+    width: 30%;
+    height: 100%;
+    margin-right: 110px;
+
+}
