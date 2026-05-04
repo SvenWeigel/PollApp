@@ -4,7 +4,7 @@ import { Buttons } from '../../shared/components/buttons/buttons';
 
 @Component({
   selector: 'app-survey',
-  imports: [Header, Buttons],
+  imports: [Header,],
   templateUrl: './survey.html',
   styleUrl: './survey.scss',
 })
