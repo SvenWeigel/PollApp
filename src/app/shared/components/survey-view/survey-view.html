@@ -12,9 +12,16 @@
       </div>
 
 
-      <div class="survey-view-left-body">**</div>
-
+      <div class="survey-view-left-body">
+        <app-survey-view-question></app-survey-view-question>
+        <app-survey-view-question></app-survey-view-question>
+        <app-survey-view-question></app-survey-view-question>
+        <app-survey-view-question></app-survey-view-question>
+      </div>
+      <app-buttons class="survey-view-left-footer" [buttonText]="'Complete survey'"></app-buttons>
     </div>
   </div>
-  <div class="survey-view-right"></div>
+  <div class="survey-view-right">
+    
+  </div>
 </main>

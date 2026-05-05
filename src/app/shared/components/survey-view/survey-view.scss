@@ -34,6 +34,7 @@ main {
 .survey-view-left-content-header{
     display:flex;
     justify-content: space-between;
+    margin-right: 40px;
 }
 
 h1{
@@ -42,4 +43,20 @@ h1{
     font-weight: 400;
     line-height: 50px;
     color:#EE9236;
+}
+
+.survey-view-left-content {
+    display: flex;
+    flex-direction: column;
+}
+
+app-buttons {
+    align-self: end;
+    margin-bottom: 40px;
+    margin-top: 40px;
+}
+
+.survey-view-left-body{
+    display:grid;
+    grid-template-columns: repeat(2, 1fr);
 }
