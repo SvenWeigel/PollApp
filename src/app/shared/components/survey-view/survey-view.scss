@@ -1,22 +1,26 @@
 main {
     display: flex;
     flex-direction: row;
-    justify-content: center;
-    align-items: center;
+    // justify-content: center;
+    // align-items: center;
 }
 
 .survey-view-left {
     background-color: #8E70991A;
-    width: 70%;
+    width: 60%;
     margin-left: 110px;
     border-top-right-radius: 160px;
     padding: 0px 40px;
 }   
 
 .survey-view-right {
-    background-color: #312fa1;
-    width: 30%;
+    width: 40%;
     margin-right: 110px;
+    margin-left: 42px;
+    margin-top: 142px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 .survey-view-left-content-status{
@@ -59,4 +63,12 @@ app-buttons {
 .survey-view-left-body{
     display:grid;
     grid-template-columns: repeat(2, 1fr);
+}
+
+.live {
+    font-family: "Nerko_One", sans-serif;
+    font-size: 32px;
+    font-weight: 400;
+    color: var(--color--p-o);
+
 }
