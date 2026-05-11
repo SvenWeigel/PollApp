@@ -2,10 +2,11 @@ import { Component, DOCUMENT, inject, OnDestroy, OnInit } from '@angular/core';
 import { Header } from '../../shared/components/header/header';
 import { Buttons } from '../../shared/components/buttons/buttons';
 import { SurveyView } from "../../shared/components/survey-view/survey-view";
+import { RouterLink } from "@angular/router";
 
 @Component({
   selector: 'app-survey',
-  imports: [Header, SurveyView],
+  imports: [Header, SurveyView,],
   templateUrl: './survey.html',
   styleUrl: './survey.scss',
 })
