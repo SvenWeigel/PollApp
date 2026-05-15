@@ -27,19 +27,21 @@ main{
 }
 
 .form-bottom--content{
-    display: flex;
-    gap: 24px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 429px));
+    column-gap: 24px;
+    row-gap: 24px;
     align-items: flex-start;
 }
 
 .form-bottom--content app-question-form{
-    flex: 0 0 429px;
+    width: 100%;
     max-width: 429px;
 }
 
 .form-bottom--content app-buttons{
     align-self: flex-start;
-    margin-left: 72px;
+    justify-self: flex-start;
 }
 
 .form-top--left-end-date{
@@ -63,18 +65,15 @@ select option{
 
 @media (max-width: 800px){
     .form-bottom--content{
-        flex-direction: column;
+        grid-template-columns: 1fr;
         gap: 16px;
     }
     .form-bottom--content app-question-form{
-        flex: 1 1 auto;
         width: 100%;
         max-width: none;
     }
     .form-bottom--content app-buttons{
-        margin-left: 0;
         align-self: flex-start;
+        justify-self: flex-start;
     }
 }
-
-
