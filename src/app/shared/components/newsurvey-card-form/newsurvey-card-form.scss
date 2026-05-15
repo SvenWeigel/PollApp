@@ -1,79 +1,80 @@
-main{
-    background-color: #8E709929;
-    padding: 40px 32px 40px 32px;
-    border-top-right-radius: 80px;
-    border-top-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-    border-bottom-left-radius: 5px;
-    color: white;
+main {
+  background-color: #8e709929;
+  padding: 40px 32px 40px 32px;
+  border-top-right-radius: 80px;
+  border-top-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+  color: white;
 }
 
-.form-top{
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 24px;
-    gap: 34px;
+.form-top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  gap: 34px;
 }
 
 .form-top--left,
-.form-top--right
-{
-    flex: 0 0 50%;
-    box-sizing: border-box;
+.form-top--right {
+  flex: 0 0 50%;
+  box-sizing: border-box;
 }
 
-.form-bottom{
-    margin-top: 64px;
+.form-bottom {
+  margin-top: 64px;
 }
 
-.form-bottom--content{
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 429px));
-    column-gap: 24px;
-    row-gap: 24px;
-    align-items: flex-start;
+.form-bottom--content {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 429px));
+  column-gap: 24px;
+  row-gap: 24px;
+  align-items: flex-start;
 }
 
-.form-bottom--content app-question-form{
+.form-bottom--content app-question-form {
+  width: 100%;
+  max-width: 429px;
+}
+
+.form-bottom--content app-buttons {
+  align-self: flex-start;
+  justify-self: flex-start;
+}
+
+.form-top--left-end-date {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+select {
+  background-color: transparent;
+  color: white;
+  border: none;
+  height: 40px;
+  padding: 2px 10px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+select option {
+  background-color: #43334a;
+  border: none;
+}
+
+@media (max-width: 800px) {
+  .form-bottom--content {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .form-bottom--content app-question-form {
     width: 100%;
-    max-width: 429px;
-}
-
-.form-bottom--content app-buttons{
+    max-width: none;
+  }
+  .form-bottom--content app-buttons {
     align-self: flex-start;
     justify-self: flex-start;
-}
-
-.form-top--left-end-date{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-select{
-    background-color: transparent;
-    color: white;
-    border: none;
-    height: 40px;
-}
-
-select option{
-    background-color: #43334A;
-    border: none;
-}
-
-
-@media (max-width: 800px){
-    .form-bottom--content{
-        grid-template-columns: 1fr;
-        gap: 16px;
-    }
-    .form-bottom--content app-question-form{
-        width: 100%;
-        max-width: none;
-    }
-    .form-bottom--content app-buttons{
-        align-self: flex-start;
-        justify-self: flex-start;
-    }
+  }
 }
