@@ -6,4 +6,9 @@ import { Component } from '@angular/core';
   templateUrl: './text-area.html',
   styleUrl: './text-area.scss',
 })
-export class TextArea {}
+export class TextArea {
+
+  clearInput(textArea: HTMLTextAreaElement) {
+    textArea.value = '';
+  }
+}

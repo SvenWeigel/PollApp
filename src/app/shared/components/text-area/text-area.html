@@ -1,7 +1,7 @@
 <div class="text-area">
-    <textarea name="describing-text" id="describing-text"></textarea>
+    <textarea name="describing-text" id="describing-text" #textAreaRef></textarea>
     
-    <button>
+    <button (click)="clearInput(textAreaRef)">
         <img src="../assets/Delete.svg" alt="Delete" />
     </button>
 </div>
