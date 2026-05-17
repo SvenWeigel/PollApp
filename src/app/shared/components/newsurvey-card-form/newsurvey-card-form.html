@@ -21,7 +21,9 @@
   </div>
   <div class="form-bottom">
     <div class="form-bottom--content">
-      <app-question-form *ngFor="let q of questions"></app-question-form>
+      @for (q of questions; track $index) {
+    <app-question-form></app-question-form>
+  }
       
       <app-buttons [buttonText]="' + Add Question'" (click)="addQuestion()"></app-buttons>
     </div>
