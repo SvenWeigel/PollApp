@@ -5,7 +5,7 @@ import { Supabase } from '../../../supabase';
 
 @Component({
   selector: 'app-your-surveys',
-  imports: [RouterLink, JsonPipe,],
+  imports: [RouterLink,],
   templateUrl: './your-surveys.html',
   styleUrl: './your-surveys.scss',
 })

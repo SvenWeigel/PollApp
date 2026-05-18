@@ -7,7 +7,7 @@
             <div [routerLink]="'survey'" id="ending-1" class="ending-items">
                 <div class="ending">
                     <span class="ending-span-1">{{dbService.surveys()[0]?.category}}</span>
-                    <h3 class="ending-name-1">Let’s Plan the Next Team Event Together</h3>
+                    <h3 class="ending-name-1">{{dbService.surveys()[0]?.headline}}</h3>
                     <p class="ending-countdown-1">Ends in 1 Days</p>
                 </div>
             </div>
