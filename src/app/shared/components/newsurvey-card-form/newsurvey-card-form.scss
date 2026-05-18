@@ -28,8 +28,8 @@ main {
 .form-bottom--content {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 429px));
-  column-gap: 24px;
-  row-gap: 24px;
+  column-gap: 95px;
+  row-gap: 34px;
   align-items: flex-start;
 }
 
@@ -41,6 +41,7 @@ main {
 .form-bottom--content app-buttons {
   align-self: flex-start;
   justify-self: flex-start;
+  margin-left: 50px;
 }
 
 .form-top--left-end-date {

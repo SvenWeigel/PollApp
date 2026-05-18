@@ -22,10 +22,10 @@
   <div class="form-bottom">
     <div class="form-bottom--content">
       @for (q of questions; track $index) {
-    <app-question-form></app-question-form>
+    <app-question-form [questionNumber]="$index + 1" (deleteQuestion)="deleteQuestion($index)"></app-question-form>
   }
       
-      <app-buttons [buttonText]="' + Add Question'" (click)="addQuestion()"></app-buttons>
+      <app-buttons [buttonText]="' + Add next Question'" (click)="addQuestion()"></app-buttons>
     </div>
   </div>
 </main>

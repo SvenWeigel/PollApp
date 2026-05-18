@@ -18,4 +18,12 @@ export class NewsurveyCardForm {
       this.questions.push(this.questions.length);
     }
   }
+
+  deleteQuestion(index: number) {
+    if (this.questions.length <= 1) {
+      return;
+    }
+
+    this.questions.splice(index, 1);
+  }
 }

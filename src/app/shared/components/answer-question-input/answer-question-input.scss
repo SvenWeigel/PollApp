@@ -1,0 +1,14 @@
+.center-inputs {
+  display: flex;
+  align-items: center;
+}
+
+.center-inputs p {
+  margin: 0;
+  width: 24px;
+  flex: 0 0 24px;
+}
+
+.center-inputs app-input-field {
+  flex: 1 1 auto;
+}
