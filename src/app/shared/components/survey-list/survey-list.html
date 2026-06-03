@@ -5,16 +5,16 @@
             <button class="past-surveys survey-btn">Past survey</button>
         </div>
         <div class="survey-list-header--sort">
-            <select name="SortByCategories" id="SortByCategories">
+            <select name="SortByCategories" id="SortByCategories" [value]="selectedCategory()" (change)="onCategoryChange($event)">
                 <option value="All">Sort by categories</option>
-                <option value="Category1">Category1</option>
-                <option value="Category2">Category2</option>
-                <option value="Category3">Category3</option>
+                <option value="after work">after work</option>
+                <option value="activity">activity</option>
+                <option value="other">other</option>
             </select>
         </div>
     </div>
     <div class="survey-list">
-        @for (survey of dbService.surveys(); track survey.id) {
+        @for (survey of filteredSurveys(); track survey.id) {
             <app-survey-item [survey]="survey"></app-survey-item>
         }
     </div>
