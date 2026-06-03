@@ -36,9 +36,8 @@
   }
   <div class="survey-view-right">
       <h2>Survey results <span class="live">Live</span></h2>
-      <app-survey-view-chart></app-survey-view-chart>
-      <app-survey-view-chart></app-survey-view-chart>
-      <app-survey-view-chart></app-survey-view-chart>
-      <app-survey-view-chart></app-survey-view-chart>
+      @for (question of dbService.selectedSurveyQuestions(); track question.id) {
+        <app-survey-view-chart></app-survey-view-chart>
+      }
   </div>
 </main>
