@@ -11,7 +11,13 @@ import { Survey } from '../../interface/survey.interface';
 })
 export class YourSurveys {
   dbService = inject(Supabase);
-  readonly surveys = computed(() => this.dbService.surveys().slice(0, 3));
+  readonly surveys = computed(() => {
+    return this.dbService
+      .surveys()
+      .filter((survey) => this.getDaysLeft(survey.ends) > 0)
+      .sort((a, b) => this.getDaysLeft(a.ends) - this.getDaysLeft(b.ends))
+      .slice(0, 3);
+  });
 
   ngOnInit(): void {
     this.dbService.getSurveys();
@@ -26,6 +32,11 @@ export class YourSurveys {
     const endDate = new Date(ends);
     const diffInMs = endDate.getTime() - today.getTime();
     return Math.max(0, Math.ceil(diffInMs / (1000 * 60 * 60 * 24)));
+  }
+
+  getDaysLeftLabel(ends: string): string {
+    const daysLeft = this.getDaysLeft(ends);
+    return daysLeft === 1 ? '1 day left' : `${daysLeft} days left`;
   }
 
   getSurveyLink(index: number): (string | number)[] {

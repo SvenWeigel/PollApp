@@ -15,11 +15,15 @@ export class SurveyList {
     const category = this.selectedCategory().toLowerCase();
     const surveys = this.dbService.surveys();
 
+    const sortedByDaysLeft = [...surveys].sort(
+      (a, b) => this.getDaysLeft(a.ends) - this.getDaysLeft(b.ends),
+    );
+
     if (category === 'all') {
-      return surveys;
+      return sortedByDaysLeft;
     }
 
-    return surveys.filter((survey) => survey.category.toLowerCase() === category);
+    return sortedByDaysLeft.filter((survey) => survey.category.toLowerCase() === category);
   });
 
   ngOnInit(): void {
@@ -29,5 +33,12 @@ export class SurveyList {
   onCategoryChange(event: Event): void {
     const target = event.target as HTMLSelectElement;
     this.selectedCategory.set(target.value);
+  }
+
+  private getDaysLeft(ends: string): number {
+    const today = new Date();
+    const endDate = new Date(ends);
+    const diffInMs = endDate.getTime() - today.getTime();
+    return Math.max(0, Math.ceil(diffInMs / (1000 * 60 * 60 * 24)));
   }
 }

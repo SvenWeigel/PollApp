@@ -8,7 +8,7 @@
                 <div class="ending">
                     <span class="ending-span-1">{{ getSurvey(0)?.category }}</span>
                     <h3 class="ending-name-1">{{ getSurvey(0)?.headline }}</h3>
-                    <p class="ending-countdown-1">Ends in {{ getSurvey(0) ? getDaysLeft(getSurvey(0)!.ends) : 0 }} Days</p>
+                    <p class="ending-countdown-1">{{ getSurvey(0) ? getDaysLeftLabel(getSurvey(0)!.ends) : '' }}</p>
                 </div>
             </div>
 
@@ -16,7 +16,7 @@
                 <div class="ending">
                     <span class="ending-span-2">{{ getSurvey(1)?.category }}</span>
                     <h3 class="ending-name-2">{{ getSurvey(1)?.headline }}</h3>
-                    <p class="ending-countdown-2">Ends in {{ getSurvey(1) ? getDaysLeft(getSurvey(1)!.ends) : 0 }} Days</p>
+                    <p class="ending-countdown-2">{{ getSurvey(1) ? getDaysLeftLabel(getSurvey(1)!.ends) : '' }}</p>
                 </div>
             </div>
 
@@ -24,7 +24,7 @@
                 <div class="ending">
                     <span class="ending-span-3">{{ getSurvey(2)?.category }}</span>
                     <h3 class="ending-name-3">{{ getSurvey(2)?.headline }}</h3>
-                    <p class="ending-countdown-3">Ends in {{ getSurvey(2) ? getDaysLeft(getSurvey(2)!.ends) : 0 }} Days</p>
+                    <p class="ending-countdown-3">{{ getSurvey(2) ? getDaysLeftLabel(getSurvey(2)!.ends) : '' }}</p>
                 </div>
             </div>
 
