@@ -14,13 +14,8 @@
         </div>
     </div>
     <div class="survey-list">
-        <app-survey-item></app-survey-item>
-        <app-survey-item></app-survey-item>
-        <app-survey-item></app-survey-item>
-        <app-survey-item></app-survey-item>
-        <app-survey-item></app-survey-item>
-        <app-survey-item></app-survey-item>
-        <app-survey-item></app-survey-item>
-        <app-survey-item></app-survey-item>
+        @for (survey of dbService.surveys(); track survey.id) {
+            <app-survey-item [survey]="survey"></app-survey-item>
+        }
     </div>
 </main>

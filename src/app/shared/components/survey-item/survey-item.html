@@ -1,6 +1,6 @@
-<div class="survey-item">
-    <span class="survey-item--head">Survey</span>
-    <h3>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas, voluptate.</h3>
-    <span class="survey-item--time-left">3 days left</span>
+<div class="survey-item" [routerLink]="['/survey', survey().id]">
+    <span class="survey-item--head">{{ survey().category }}</span>
+    <h3>{{ survey().headline }}</h3>
+    <span class="survey-item--time-left">{{ getDaysLeft() }} days left</span>
 </div>
 

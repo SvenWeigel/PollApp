@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { SurveyItem } from "../survey-item/survey-item";
+import { Supabase } from '../../../supabase';
 
 @Component({
   selector: 'app-survey-list',
@@ -7,4 +8,10 @@ import { SurveyItem } from "../survey-item/survey-item";
   templateUrl: './survey-list.html',
   styleUrl: './survey-list.scss',
 })
-export class SurveyList {}
+export class SurveyList {
+  readonly dbService = inject(Supabase);
+
+  ngOnInit(): void {
+    this.dbService.getSurveys();
+  }
+}

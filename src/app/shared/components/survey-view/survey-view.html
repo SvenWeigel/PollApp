@@ -1,26 +1,39 @@
 <main>
+  @if (dbService.selectedSurvey(); as survey) {
   <div class="survey-view-left">
     <div class="survey-view-left-content">
       <div class="survey-view-left-header">
         <span class="survey-view-left-content-status">Published</span>
         <div class="survey-view-left-content-header">
-            <span>Ends on 01.09.2026</span>
-            <span>Category: Team activity</span>
+            <span>Ends on {{ formatDate(survey.ends) }}</span>
+            <span>Category: {{ survey.category }}</span>
         </div>
-        <h1>How do you like our new office?</h1>
-        <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec suscipit auctor dui, sed efficitur ligula. Donec a nunc ac nisi efficitur convallis. Sed at nunc sed enim efficitur tincidunt. In hac habitasse platea dictumst. Donec eget odio a enim efficitur convallis. Sed at nunc sed enim efficitur tincidunt. In hac habitasse platea dictumst.</span>
+        <h1>{{ survey.headline }}</h1>
+        <span>{{ survey.description }}</span>
       </div>
 
 
       <div class="survey-view-left-body">
-        <app-survey-view-question></app-survey-view-question>
-        <app-survey-view-question></app-survey-view-question>
-        <app-survey-view-question></app-survey-view-question>
-        <app-survey-view-question></app-survey-view-question>
+        @for (question of dbService.selectedSurveyQuestions(); track question.id; let i = $index) {
+          <app-survey-view-question
+            [questionNumber]="i + 1"
+            [questionText]="question.question"
+            [answers]="question.answers"
+          ></app-survey-view-question>
+        }
       </div>
       <app-buttons class="survey-view-left-footer" [buttonText]="'Complete survey'"></app-buttons>
     </div>
   </div>
+  } @else {
+    <div class="survey-view-left">
+      <div class="survey-view-left-content">
+        <div class="survey-view-left-header">
+          <h1>Survey not found</h1>
+        </div>
+      </div>
+    </div>
+  }
   <div class="survey-view-right">
       <h2>Survey results <span class="live">Live</span></h2>
       <app-survey-view-chart></app-survey-view-chart>

@@ -4,27 +4,27 @@
         <span class="ending-span">Ending soon surveys</span>
         <div class="soon-ending-surveys">
 
-            <div [routerLink]="'survey'" id="ending-1" class="ending-items">
+            <div [routerLink]="getSurveyLink(0)" id="ending-1" class="ending-items">
                 <div class="ending">
-                    <span class="ending-span-1">{{dbService.surveys()[0]?.category}}</span>
-                    <h3 class="ending-name-1">{{dbService.surveys()[0]?.headline}}</h3>
-                    <p class="ending-countdown-1">Ends in 1 Days</p>
+                    <span class="ending-span-1">{{ getSurvey(0)?.category }}</span>
+                    <h3 class="ending-name-1">{{ getSurvey(0)?.headline }}</h3>
+                    <p class="ending-countdown-1">Ends in {{ getSurvey(0) ? getDaysLeft(getSurvey(0)!.ends) : 0 }} Days</p>
                 </div>
             </div>
 
-            <div id="ending-2" class="ending-items">
+            <div [routerLink]="getSurveyLink(1)" id="ending-2" class="ending-items">
                 <div class="ending">
-                    <span class="ending-span-2">Health & Wellness</span>
-                    <h3 class="ending-name-2">Stay Fit and Healthy</h3>
-                    <p class="ending-countdown-2">Ends in 2 Days</p>
+                    <span class="ending-span-2">{{ getSurvey(1)?.category }}</span>
+                    <h3 class="ending-name-2">{{ getSurvey(1)?.headline }}</h3>
+                    <p class="ending-countdown-2">Ends in {{ getSurvey(1) ? getDaysLeft(getSurvey(1)!.ends) : 0 }} Days</p>
                 </div>
             </div>
 
-            <div id="ending-3" class="ending-items">
+            <div [routerLink]="getSurveyLink(2)" id="ending-3" class="ending-items">
                 <div class="ending">
-                    <span class="ending-span-3">Gaming & Entertainment</span>
-                    <h3 class="ending-name-3">Level Up Your Gaming Skills</h3>
-                    <p class="ending-countdown-3">Ends in 3 Days</p>
+                    <span class="ending-span-3">{{ getSurvey(2)?.category }}</span>
+                    <h3 class="ending-name-3">{{ getSurvey(2)?.headline }}</h3>
+                    <p class="ending-countdown-3">Ends in {{ getSurvey(2) ? getDaysLeft(getSurvey(2)!.ends) : 0 }} Days</p>
                 </div>
             </div>
 

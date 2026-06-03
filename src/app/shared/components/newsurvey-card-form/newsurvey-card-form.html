@@ -1,4 +1,4 @@
-<main>
+<main #formRoot>
   <div class="form-top">
     <div class="form-top--left">
       <h3>Survey name</h3>
@@ -7,9 +7,9 @@
         <h3>Set end date (optional)</h3>
         <select class="form-top--left-select">
           <option value="" disabled selected>Choose category</option>
-          <option value="1">after work</option>
-          <option value="7">activity</option>
-          <option value="30">other</option>
+          <option value="after work">after work</option>
+          <option value="activity">activity</option>
+          <option value="other">other</option>
         </select>
       </div>
       <app-input-field [inputMaxWidth]="'220px'" class="form-top--left-input"></app-input-field>
@@ -27,5 +27,8 @@
       
       <app-buttons [buttonText]="' + Add next Question'" (click)="addQuestion()"></app-buttons>
     </div>
+    @if (errorMessage) {
+      <p>{{ errorMessage }}</p>
+    }
   </div>
 </main>
