@@ -1,4 +1,5 @@
-import { Component, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
+import { AnswerKey, VoteToggleEvent } from '../../../supabase';
 
 @Component({
   selector: 'app-survey-view-question',
@@ -10,8 +11,18 @@ export class SurveyViewQuestion {
   readonly questionNumber = input<number>(1);
   readonly questionText = input<string>('');
   readonly answers = input<string[]>([]);
+  readonly voteToggled = output<VoteToggleEvent>();
 
-  label(index: number): string {
-    return String.fromCharCode(65 + index);
+  label(index: number): AnswerKey {
+    return String.fromCharCode(65 + index) as AnswerKey;
+  }
+
+  onCheckboxChange(event: Event, index: number): void {
+    const checkbox = event.target as HTMLInputElement;
+
+    this.voteToggled.emit({
+      answerKey: this.label(index),
+      checked: checkbox.checked,
+    });
   }
 }

@@ -22,3 +22,18 @@ main{
         font-weight: 400;
     }
 }
+
+.form-check-input:hover {
+    border-color: var(--color--s-o) !important;
+    background-color: var(--color--s-o) !important;
+
+}
+.form-check-input:checked {
+    background-color: var(--color--p-o) !important;
+    border-color: var(--color--p-o) !important;
+}
+
+.form-check-input:focus {
+    border: none !important;
+    box-shadow: none !important;
+}

@@ -4,7 +4,7 @@
 
   @for (answer of answers(); track $index; let i = $index) {
     <div class="form-check">
-      <input class="form-check-input" type="checkbox" [id]="'answer-' + questionNumber() + '-' + i" />
+      <input class="form-check-input" type="checkbox" [id]="'answer-' + questionNumber() + '-' + i" (change)="onCheckboxChange($event, i)" />
       <label class="form-check-label" [for]="'answer-' + questionNumber() + '-' + i">
         {{ label(i) }}.
         <span class="form-check-label--span">{{ answer }}</span>

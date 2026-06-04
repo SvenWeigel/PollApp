@@ -1,13 +1,13 @@
 import { Component, inject } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Buttons } from "../buttons/buttons";
 import { SurveyViewQuestion } from "../survey-view-question/survey-view-question";
 import { SurveyViewChart } from "../survey-view-chart/survey-view-chart";
-import { Supabase } from '../../../supabase';
+import { Supabase, VoteToggleEvent } from '../../../supabase';
 
 @Component({
   selector: 'app-survey-view',
-  imports: [Buttons, SurveyViewQuestion, SurveyViewChart],
+  imports: [Buttons, SurveyViewQuestion, SurveyViewChart, RouterLink],
   templateUrl: './survey-view.html',
   styleUrl: './survey-view.scss',
 })
@@ -36,5 +36,19 @@ export class SurveyView {
     }
 
     return new Intl.DateTimeFormat('de-DE').format(new Date(value));
+  }
+
+  async onVoteToggled(questionId: number, event: VoteToggleEvent): Promise<void> {
+    const survey = this.dbService.selectedSurvey();
+    if (!survey) {
+      return;
+    }
+
+    if (event.checked) {
+      await this.dbService.addVote(survey.id, questionId, event.answerKey);
+      return;
+    }
+
+    await this.dbService.removeVote(survey.id, questionId, event.answerKey);
   }
 }

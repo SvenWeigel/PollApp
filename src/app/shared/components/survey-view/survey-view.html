@@ -19,10 +19,11 @@
             [questionNumber]="i + 1"
             [questionText]="question.question"
             [answers]="question.answers"
+            (voteToggled)="onVoteToggled(question.id, $event)"
           ></app-survey-view-question>
         }
       </div>
-      <app-buttons class="survey-view-left-footer" [buttonText]="'Complete survey'"></app-buttons>
+      <app-buttons class="survey-view-left-footer" [routerLink]="''" [buttonText]="'Complete survey'"></app-buttons>
     </div>
   </div>
   } @else {
@@ -36,8 +37,13 @@
   }
   <div class="survey-view-right">
       <h2>Survey results <span class="live">Live</span></h2>
-      @for (question of dbService.selectedSurveyQuestions(); track question.id) {
-        <app-survey-view-chart></app-survey-view-chart>
+      @for (question of dbService.selectedSurveyQuestions(); track question.id; let i = $index) {
+        <app-survey-view-chart
+          [questionNumber]="i + 1"
+          [questionText]="question.question"
+          [answers]="question.answers"
+          [counts]="dbService.getVoteCountsForQuestion(question.id)"
+        ></app-survey-view-chart>
       }
   </div>
 </main>
