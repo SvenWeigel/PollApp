@@ -1,5 +1,5 @@
 <div class="input-fields">
-    <input type="text" #inputRef [style.width]="inputWidth" [style.height]="inputHeight" [style.maxWidth]="inputMaxWidth" [placeholder]="placeholder" />
+    <input type="text" #inputRef [style.width]="inputWidth" [style.height]="inputHeight" [style.maxWidth]="inputMaxWidth" [placeholder]="placeholder" [class.input-invalid]="invalid" [attr.aria-invalid]="invalid" />
     <button (click)="clearInput(inputRef)">
         <img
         [src]="iconSrc"

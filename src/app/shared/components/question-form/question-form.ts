@@ -13,8 +13,23 @@ type AnswerLabel = (typeof ANSWER_LABELS)[number];
 })
 export class QuestionForm {
   @Input() questionNumber: number = 1;
+  @Input() questionError: string = '';
+  @Input() answerAError: string = '';
+  @Input() answerBError: string = '';
   @Output() deleteQuestion = new EventEmitter<void>();
   readonly answerLabels = signal<AnswerLabel[]>(['A', 'B']);
+
+  getAnswerError(label: AnswerLabel): string {
+    if (label === 'A') {
+      return this.answerAError;
+    }
+
+    if (label === 'B') {
+      return this.answerBError;
+    }
+
+    return '';
+  }
 
   addAnswer(): void {
     const currentAnswers = this.answerLabels();

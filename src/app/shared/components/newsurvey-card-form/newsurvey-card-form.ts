@@ -13,11 +13,37 @@ import { NewQuestion, Supabase } from '../../../supabase';
 })
 export class NewsurveyCardForm {
   @ViewChild('formRoot', { read: ElementRef }) formRoot?: ElementRef<HTMLElement>;
+  @ViewChild('nativeDateInput', { read: ElementRef }) nativeDateInput?: ElementRef<HTMLInputElement>;
 
   private readonly dbService = inject(Supabase);
 
   questions = [0];
-  errorMessage = '';
+  endsValue = '';
+  headlineError = '';
+  questionErrors: Record<number, string> = {};
+  answerAErrors: Record<number, string> = {};
+  answerBErrors: Record<number, string> = {};
+
+  openDatePicker(): void {
+    const dateInput = this.nativeDateInput?.nativeElement;
+    if (!dateInput) {
+      return;
+    }
+
+    if (typeof dateInput.showPicker === 'function') {
+      dateInput.showPicker();
+      return;
+    }
+
+    dateInput.focus();
+    dateInput.click();
+  }
+
+  onNativeDateChange(event: Event): void {
+    const target = event.target as HTMLInputElement | null;
+    const rawValue = target?.value ?? '';
+    this.endsValue = rawValue ? this.formatDateForDisplay(rawValue) : '';
+  }
 
   addQuestion() {
     if (this.questions.length < 4) {
@@ -34,33 +60,52 @@ export class NewsurveyCardForm {
   }
 
   async publishSurvey(): Promise<boolean> {
-    this.errorMessage = '';
+    this.clearAllErrors();
 
     const root = this.formRoot?.nativeElement;
     if (!root) {
-      this.errorMessage = 'Form konnte nicht gelesen werden.';
+      this.headlineError = '*required';
       return false;
     }
 
     const headline = this.readInputValue(root, '.form-top--left app-input-field:first-of-type input');
     const categorySelect = root.querySelector('.form-top--left-end-date select') as HTMLSelectElement | null;
-    const ends = this.readInputValue(root, '.form-top--left app-input-field:last-of-type input');
+    const ends = this.endsValue;
     const description = this.readTextareaValue(root, '.form-top--right textarea');
     const category = categorySelect?.value?.trim() || 'other';
 
     if (!headline) {
-      this.errorMessage = 'Bitte gib einen Survey-Namen ein.';
+      this.headlineError = '*required';
       return false;
     }
 
-    if (!ends) {
-      this.errorMessage = 'Bitte gib ein Enddatum ein.';
+    const firstQuestionForm = root.querySelector('app-question-form') as HTMLElement | null;
+    const firstQuestionInput = firstQuestionForm?.querySelector('.form-bottom-question input') as HTMLInputElement | null;
+    const firstAnswerInputs = Array.from(firstQuestionForm?.querySelectorAll('.answer-form-body app-answer-question-input input') ?? []) as HTMLInputElement[];
+
+    const firstQuestionText = firstQuestionInput?.value.trim() ?? '';
+    if (!firstQuestionText) {
+      this.questionErrors[0] = '*required';
+    }
+
+    const firstAnswerA = firstAnswerInputs[0]?.value.trim() ?? '';
+    const firstAnswerB = firstAnswerInputs[1]?.value.trim() ?? '';
+
+    if (!firstAnswerA) {
+      this.answerAErrors[0] = '*required';
+    }
+
+    if (!firstAnswerB) {
+      this.answerBErrors[0] = '*required';
+    }
+
+    if (this.hasInlineErrors()) {
       return false;
     }
 
     const collectedQuestions = this.collectQuestions(root);
     if (collectedQuestions.length === 0) {
-      this.errorMessage = 'Bitte mindestens eine Frage mit 2 Antworten eingeben.';
+      this.questionErrors[0] = '*required';
       return false;
     }
 
@@ -76,9 +121,72 @@ export class NewsurveyCardForm {
       );
       return true;
     } catch (error) {
-      this.errorMessage = error instanceof Error ? error.message : 'Speichern fehlgeschlagen.';
+      this.headlineError = error instanceof Error ? error.message : 'Speichern fehlgeschlagen.';
       return false;
     }
+  }
+
+  onFormInput(event: Event): void {
+    const target = event.target as HTMLElement | null;
+    if (!target) {
+      return;
+    }
+
+    const root = this.formRoot?.nativeElement;
+    if (!root) {
+      return;
+    }
+
+    const headlineInput = root.querySelector('.form-top--left app-input-field:first-of-type input') as HTMLInputElement | null;
+    if (this.headlineError && target === headlineInput && headlineInput.value.trim().length > 0) {
+      this.headlineError = '';
+    }
+
+    const firstQuestionForm = root.querySelector('app-question-form') as HTMLElement | null;
+    const firstQuestionInput = firstQuestionForm?.querySelector('.form-bottom-question input') as HTMLInputElement | null;
+    if (this.questionErrors[0] && target === firstQuestionInput && firstQuestionInput.value.trim().length > 0) {
+      delete this.questionErrors[0];
+    }
+
+    const firstAnswerInputs = Array.from(firstQuestionForm?.querySelectorAll('.answer-form-body app-answer-question-input input') ?? []) as HTMLInputElement[];
+    const firstAnswerA = firstAnswerInputs[0] ?? null;
+    const firstAnswerB = firstAnswerInputs[1] ?? null;
+
+    if (this.answerAErrors[0] && target === firstAnswerA && firstAnswerA.value.trim().length > 0) {
+      delete this.answerAErrors[0];
+    }
+
+    if (this.answerBErrors[0] && target === firstAnswerB && firstAnswerB.value.trim().length > 0) {
+      delete this.answerBErrors[0];
+    }
+  }
+
+  getQuestionError(index: number): string {
+    return this.questionErrors[index] ?? '';
+  }
+
+  getAnswerAError(index: number): string {
+    return this.answerAErrors[index] ?? '';
+  }
+
+  getAnswerBError(index: number): string {
+    return this.answerBErrors[index] ?? '';
+  }
+
+  private clearAllErrors(): void {
+    this.headlineError = '';
+    this.questionErrors = {};
+    this.answerAErrors = {};
+    this.answerBErrors = {};
+  }
+
+  private hasInlineErrors(): boolean {
+    return Boolean(
+      this.headlineError ||
+      Object.keys(this.questionErrors).length ||
+      Object.keys(this.answerAErrors).length ||
+      Object.keys(this.answerBErrors).length,
+    );
   }
 
   private readInputValue(root: HTMLElement, selector: string): string {
@@ -116,5 +224,14 @@ export class NewsurveyCardForm {
     }
 
     return result;
+  }
+
+  private formatDateForDisplay(rawDate: string): string {
+    const [year, month, day] = rawDate.split('-');
+    if (!year || !month || !day) {
+      return '';
+    }
+
+    return `${year}.${month}.${day}`;
   }
 }

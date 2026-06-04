@@ -9,4 +9,6 @@ import { InputField } from "../input-field/input-field";
 })
 export class AnswerQuestionInput {
   readonly label = input<'A' | 'B' | 'C' | 'D'>('A');
+  readonly invalid = input<boolean>(false);
+  readonly errorMessage = input<string>('');
 }

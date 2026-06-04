@@ -1,4 +1,7 @@
 <div class="center-inputs">
   <p>{{ label() }}.</p>
-        <app-input-field [showIcon]="true" inputWidth="100%" inputMaxWidth="none"></app-input-field>
-      </div>
+  <div class="answer-input-wrapper">
+    <app-input-field [showIcon]="true" inputWidth="100%" inputMaxWidth="none" [invalid]="invalid()"></app-input-field>
+    <p class="field-error" [class.field-error-visible]="errorMessage().length > 0">{{ errorMessage() || ' ' }}</p>
+  </div>
+</div>

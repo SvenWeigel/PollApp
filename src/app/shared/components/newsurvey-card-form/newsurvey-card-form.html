@@ -1,8 +1,9 @@
-<main #formRoot>
+<main #formRoot (input)="onFormInput($event)">
   <div class="form-top">
     <div class="form-top--left">
       <h3>Survey name</h3>
-      <app-input-field class="form-top--left-input"></app-input-field>
+        <app-input-field class="form-top--left-input" [invalid]="headlineError.length > 0"></app-input-field>
+        <p class="field-error" [class.field-error-visible]="headlineError.length > 0">{{ headlineError || ' ' }}</p>
       <div class="form-top--left-end-date">
         <h3>Set end date (optional)</h3>
         <select class="form-top--left-select">
@@ -12,7 +13,26 @@
           <option value="other">other</option>
         </select>
       </div>
-      <app-input-field [inputMaxWidth]="'220px'" class="form-top--left-input"></app-input-field>
+      <div class="date-input-wrapper">
+        <input
+          class="date-display-input"
+          type="text"
+          [value]="endsValue"
+          placeholder="YYYY.MM.DD"
+          readonly
+        />
+        <button type="button" class="date-picker-btn-icon" aria-label="Open calendar" (click)="openDatePicker()">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M7 2a1 1 0 0 1 1 1v1h8V3a1 1 0 1 1 2 0v1h1a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3V7a3 3 0 0 1 3-3h1V3a1 1 0 0 1 1-1Zm12 8H5v9a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-9ZM6 6a1 1 0 0 0-1 1v1h14V7a1 1 0 0 0-1-1H6Zm2.5 6a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm7 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"/>
+          </svg>
+        </button>
+        <input
+          #nativeDateInput
+          class="native-date-input"
+          type="date"
+          (change)="onNativeDateChange($event)"
+        />
+      </div>
     </div>
     <div class="form-top--right">
       <h3>Description text (optional)</h3>
@@ -21,14 +41,17 @@
   </div>
   <div class="form-bottom">
     <div class="form-bottom--content">
-      @for (q of questions; track $index) {
-    <app-question-form [questionNumber]="$index + 1" (deleteQuestion)="deleteQuestion($index)"></app-question-form>
+      @for (q of questions; track $index; let i = $index) {
+    <app-question-form
+      [questionNumber]="i + 1"
+      [questionError]="getQuestionError(i)"
+      [answerAError]="getAnswerAError(i)"
+      [answerBError]="getAnswerBError(i)"
+      (deleteQuestion)="deleteQuestion(i)">
+    </app-question-form>
   }
       
       <app-buttons [buttonText]="' + Add next Question'" (click)="addQuestion()"></app-buttons>
     </div>
-    @if (errorMessage) {
-      <p>{{ errorMessage }}</p>
-    }
   </div>
 </main>

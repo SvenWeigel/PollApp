@@ -4,7 +4,8 @@
     <button (click)="delete()"><img src="../assets/Delete.svg" alt="Delete" /></button>
   </div>
   <div class="form-bottom-question">
-    <app-input-field [showIcon]="false" inputWidth="100%" inputMaxWidth="none"></app-input-field>
+    <app-input-field [showIcon]="false" inputWidth="100%" inputMaxWidth="none" [invalid]="questionError.length > 0"></app-input-field>
+    <p class="field-error" [class.field-error-visible]="questionError.length > 0">{{ questionError || ' ' }}</p>
   </div>
   <div class="answer-form">
     <div class="answer-form-header">
@@ -16,7 +17,7 @@
     </div>
     <div class="answer-form-body">
       @for (label of answerLabels(); track label) {
-        <app-answer-question-input [label]="label"></app-answer-question-input>
+        <app-answer-question-input [label]="label" [invalid]="getAnswerError(label).length > 0" [errorMessage]="getAnswerError(label)"></app-answer-question-input>
       }
 
       @if (answerLabels().length < 4) {

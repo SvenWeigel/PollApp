@@ -12,3 +12,23 @@
 .center-inputs app-input-field {
   flex: 1 1 auto;
 }
+
+.answer-input-wrapper {
+  flex: 1 1 auto;
+}
+
+.field-error {
+  margin: 6px 0 0;
+  color: #dc2626;
+  font-size: 14px;
+  line-height: 18px;
+  min-height: 18px;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 120ms ease;
+}
+
+.field-error-visible {
+  visibility: visible;
+  opacity: 1;
+}

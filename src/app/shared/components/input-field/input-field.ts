@@ -13,6 +13,7 @@ export class InputField {
   @Input() inputHeight: string = '37px';
   @Input() placeholder: string = '';
   @Input() inputMaxWidth: string = '429px';
+  @Input() invalid: boolean = false;
 
   clearInput(input: HTMLInputElement) {
     input.value = '';

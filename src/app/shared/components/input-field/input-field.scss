@@ -2,6 +2,7 @@ input{
     height: 37px; 
     width: 100%;
     max-width: 429px;
+    border: 1px solid #9ca3af;
     border-top-right-radius: 20px;
     border-top-left-radius: 5px;
     border-bottom-right-radius: 5px;
@@ -23,4 +24,8 @@ img{
 button{
     background: none;
     border: none;
+}
+
+.input-invalid {
+    border: 1px solid #dc2626;
 }
