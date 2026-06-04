@@ -8,6 +8,10 @@ textarea{
     border-bottom-right-radius: 5px;
     border-bottom-left-radius: 5px;
     padding: 7px 13px 7px 13px;
+
+    &:focus{
+        background-color: var(--color--s-o);
+    }
 }
 
 .text-area{
