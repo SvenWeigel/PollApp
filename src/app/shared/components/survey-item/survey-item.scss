@@ -45,3 +45,9 @@
         border-top-right-radius: 14px;
     }
 }
+
+@media (max-width: 575px) {
+    .survey-item {
+        width: 100%;
+    }
+}

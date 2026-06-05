@@ -57,4 +57,22 @@ h1{
     .description-button {
         align-self: center;
     }
+
+    main{
+        padding: 0 20px;
+    }
 }
+
+@media (max-width: 575px) {
+    h1{
+        font-size: 48px;
+        line-height: 100%;
+    }
+
+    .description-span{
+        font-size: 18px;
+        line-height: 100%;
+        max-width: 100%;
+    }
+}
+

@@ -67,3 +67,28 @@ main {
   border-radius: 20px;
   cursor: pointer;
 }
+
+@media (max-width: 1190px) {
+  .survey-list {
+    grid-template-columns: 1fr;
+    max-height: none;
+  }
+}
+
+@media (max-width: 575px) {
+  .survey-list {
+    width: calc(100% - 10px);
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+}
+
+@media (max-width: 450px) {
+  .survey-list-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 48px;
+    padding: 0 5px;
+  }
+}
+  
