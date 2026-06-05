@@ -89,5 +89,22 @@ h2 {
     overflow-y: hidden;
     padding-bottom: 10px;
     -webkit-overflow-scrolling: touch;
+
+    &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 999px;
+    margin: 0 8px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--color--p-o);
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
   }
 }
