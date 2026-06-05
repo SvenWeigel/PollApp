@@ -38,10 +38,15 @@ h2 {
   display: flex;
   width: 321px;
   height: 310px;
-  background-color: white;
+  background-color: #FAF5FE;
   padding: 40px 18px 40px 18px;
   border-top-right-radius: 80px;
+
+  &:hover {
+    background-color: #F4E9FB;
+  }
 }
+
 
 .ending {
   display: flex;

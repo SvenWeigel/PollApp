@@ -15,6 +15,10 @@
     box-sizing: border-box;
     overflow: hidden;
 
+    &:hover {
+        background-color: rgba(217, 217, 217, 0.16);
+    }
+
     h3 {
         margin: 6px 0;
         overflow-wrap: anywhere;
