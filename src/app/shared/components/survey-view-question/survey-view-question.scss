@@ -37,3 +37,8 @@ main{
     border: none !important;
     box-shadow: none !important;
 }
+
+.form-check:hover{
+    background-color: rgba(255, 207, 161, 0.4);
+    border-radius: 3px;
+}
