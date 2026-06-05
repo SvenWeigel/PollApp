@@ -2,12 +2,11 @@
     <div class="description-content">
         <div class="description-text-btn">
             <h1>Collect Feedback,<br> Unlock Ideas</h1>
+            <app-main-image class="inline-main-image"></app-main-image>
             <span class="description-span">Create and share surveys in minutes from team events to workplace culture. Collect opinions, engage your audience, and turn feedback into action</span>
-            <app-buttons [routerLink]="['/newsurvey']"></app-buttons>
+            <app-buttons class="description-button" [routerLink]="['/newsurvey']"></app-buttons>
         </div>
     </div>
 
-        <div class="description-image" (mouseenter)="onImageEnter()" (mouseleave)="onImageLeave()">
-            <img class="phone-img" [src]="phoneImageSrc()" alt="Mobile Phone">
-        </div>
+        <app-main-image class="side-main-image"></app-main-image>
 </main>

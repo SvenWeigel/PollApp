@@ -1,25 +1,13 @@
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import { Buttons } from '../buttons/buttons';
 import { RouterLink } from "@angular/router";
+import { MainImage } from "../main-image/main-image";
 
 @Component({
   selector: 'app-description',
-  imports: [Buttons, RouterLink],
+  imports: [Buttons, RouterLink, MainImage],
   templateUrl: './description.html',
   styleUrl: './description.scss',
 })
 export class Description {
-  private readonly defaultPhoneImage = './assets/mobile-phone-logo.svg';
-  private readonly hoverPhoneImage = './assets/mobile-phone-logo-move.svg';
-
-  readonly phoneImageSrc = signal(this.defaultPhoneImage);
-
-  onImageEnter(): void {
-    this.phoneImageSrc.set(this.hoverPhoneImage);
-  }
-
-  onImageLeave(): void {
-    this.phoneImageSrc.set(this.defaultPhoneImage);
-  }
-
 }

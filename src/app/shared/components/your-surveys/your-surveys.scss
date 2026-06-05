@@ -5,7 +5,8 @@ main {
 }
 
 .surveys-group {
-  width: fit-content;
+  width: 100%;
+  max-width: 1027px;
   margin: 0 auto;
 }
 
@@ -32,10 +33,12 @@ h2 {
   display: flex;
   gap: 32px;
   justify-content: flex-start;
+  width: 100%;
 }
 
 .ending-items {
   display: flex;
+  flex: 0 0 321px;
   width: 321px;
   height: 310px;
   background-color: #FAF5FE;
@@ -77,4 +80,14 @@ h2 {
   align-self: flex-start;
   padding: 3px 6px 3px 6px;
   border-top-right-radius: 14px;
+}
+
+
+@media (max-width: 1190px) {
+  .soon-ending-surveys {
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 10px;
+    -webkit-overflow-scrolling: touch;
+  }
 }
