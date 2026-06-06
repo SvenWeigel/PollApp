@@ -75,3 +75,41 @@ app-buttons {
     color: var(--color--p-o);
 
 }
+
+@media (max-width: 1450px) {
+    main{
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .survey-view-right {
+        margin-right: 0px;
+    }
+
+    .survey-view-left {
+        margin-left: 0px;
+    }
+}
+
+@media (max-width: 950px) {
+    .survey-view-left-body{
+        grid-template-columns: 1fr;
+    }
+
+    .survey-view-left {
+        width: 100%
+    }
+
+    .survey-view-right {
+        width: 100%;
+        padding: 10px;
+        margin-left: 0px;
+        margin-top: 20px;
+        align-items: center;
+    }
+
+    h1{
+        font-size: 48px;
+    }
+
+}

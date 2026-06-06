@@ -10,3 +10,17 @@
     font-weight: 800;
     color: var(--color--p-o);
 }
+
+@media (max-width: 950px) {
+    main{
+        max-width: 500px;
+    }
+
+    .w-75 {
+        width: 100% !important;
+    }
+
+    .question-title {
+        font-size: 16px;
+    }
+}
