@@ -26,6 +26,12 @@
       <app-buttons class="survey-view-left-footer" [routerLink]="''" [buttonText]="'Complete survey'"></app-buttons>
     </div>
   </div>
+  <button (click)="seeResults()" class="see-results-button">
+    <p>
+      {{ areResultsVisible() ? 'Close results' : 'See results' }}
+      <img src="/assets/arrow-up-icon.svg" alt="arrow icon" [class.rotated]="!areResultsVisible()">
+    </p>
+  </button>
   } @else {
     <div class="survey-view-left">
       <div class="survey-view-left-content">
@@ -35,7 +41,7 @@
       </div>
     </div>
   }
-  <div class="survey-view-right">
+  <div class="survey-view-right" [class.hidden]="!areResultsVisible()">
       <h2>Survey results <span class="live">Live</span></h2>
       @for (question of dbService.selectedSurveyQuestions(); track question.id; let i = $index) {
         <app-survey-view-chart

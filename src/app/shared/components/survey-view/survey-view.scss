@@ -3,8 +3,6 @@ main {
     flex-direction: row;
     max-width: 1440px;
     margin: 0 auto;
-    // justify-content: center;
-    // align-items: center;
 }
 
 .survey-view-left {
@@ -23,6 +21,10 @@ main {
     display: flex;
     flex-direction: column;
     gap: 20px;
+    opacity: 1;
+    max-height: 3000px;
+    overflow: hidden;
+    transition: opacity 220ms ease, max-height 220ms ease, transform 0.5s ease-in-out;
 }
 
 .survey-view-left-content-status{
@@ -76,6 +78,45 @@ app-buttons {
 
 }
 
+.see-results-button {
+    display: none;
+    align-items: center;
+    justify-content: flex-start;
+    align-self: flex-start;
+    width: 100%;
+    gap: 8px;
+    border: none;
+    background-color: transparent;
+    margin-top: 20px;
+    cursor: pointer;
+    padding: 0 0 0 10px;
+    text-align: left;
+
+    & img {
+        width: 32px;
+        height: 32px;
+        transition: transform 220ms ease;
+    }
+
+    & p {
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    & img.rotated {
+        transform: rotate(180deg);
+    }
+}
+
+.survey-view-right.hidden {
+    opacity: 0;
+    max-height: 0;
+    transform: translateY(-8px);
+    pointer-events: none;
+}
+
 @media (max-width: 1450px) {
     main{
         flex-direction: column;
@@ -84,11 +125,13 @@ app-buttons {
 
     .survey-view-right {
         margin-right: 0px;
+        margin-top: 20px;
     }
 
     .survey-view-left {
         margin-left: 0px;
     }
+
 }
 
 @media (max-width: 950px) {
@@ -112,4 +155,8 @@ app-buttons {
         font-size: 48px;
     }
 
+    .see-results-button {
+        display: flex;
+        justify-content: flex-start;
+    }
 }

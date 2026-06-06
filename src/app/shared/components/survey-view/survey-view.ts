@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Buttons } from "../buttons/buttons";
 import { SurveyViewQuestion } from "../survey-view-question/survey-view-question";
@@ -14,6 +14,7 @@ import { Supabase, VoteToggleEvent } from '../../../supabase';
 export class SurveyView {
   readonly dbService = inject(Supabase);
   private readonly route = inject(ActivatedRoute);
+  readonly areResultsVisible = signal(true);
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
@@ -50,5 +51,9 @@ export class SurveyView {
     }
 
     await this.dbService.removeVote(survey.id, questionId, event.answerKey);
+  }
+
+  seeResults(): void {
+    this.areResultsVisible.update((visible) => !visible);
   }
 }
