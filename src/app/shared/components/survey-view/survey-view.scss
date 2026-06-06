@@ -97,7 +97,8 @@ app-buttons {
     }
 
     .survey-view-left {
-        width: 100%
+        width: 100%;
+        padding: 0px 10px;
     }
 
     .survey-view-right {
@@ -105,7 +106,6 @@ app-buttons {
         padding: 10px;
         margin-left: 0px;
         margin-top: 20px;
-        align-items: center;
     }
 
     h1{
