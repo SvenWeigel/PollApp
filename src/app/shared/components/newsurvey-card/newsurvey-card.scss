@@ -13,3 +13,32 @@ app-buttons {
   display: flex;
   justify-content: flex-end;
 }
+
+@media (max-width: 1420px) {
+  main {
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 1180px) {
+  main {
+    margin: 0px;
+    align-items: center;
+  }
+
+  app-newsurvey-card-header {
+    align-self: stretch;
+  }
+}
+
+@media (max-width: 800px) {
+  main {
+    padding: 10px;
+  }
+
+  app-newsurvey-card-header {
+    align-self: center;
+  }
+}

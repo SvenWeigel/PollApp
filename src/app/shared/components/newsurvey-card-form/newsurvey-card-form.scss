@@ -137,6 +137,14 @@ select option {
   border: none;
 }
 
+.desktop-only {
+  display: block;
+}
+
+.mobile-only {
+  display: none;
+}
+
 @media (max-width: 800px) {
   .form-bottom--content {
     grid-template-columns: 1fr;
@@ -149,5 +157,35 @@ select option {
   .form-bottom--content app-buttons {
     align-self: flex-start;
     justify-self: flex-start;
+  }
+
+  main {
+    padding: 10px;
+    padding-bottom: 40px;
+  }
+}
+
+
+@media (max-width: 1180px) {
+  .desktop-only {
+    display: none;
+  }
+
+  .mobile-only {
+    display: block;
+  }
+
+  .form-bottom--content {
+    grid-template-columns: 1fr;
+  }
+
+  .form-top{
+    flex-direction: column;
+  }
+
+  .add-question-btn{
+    justify-self: center !important;
+    margin-left: 0 !important;
+    // align-self: center !important;
   }
 }

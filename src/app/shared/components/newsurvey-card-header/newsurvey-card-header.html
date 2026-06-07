@@ -1,9 +1,11 @@
 <main>
-    <div>
+    <div class="newsurvey-card-mobile-header">
         <span>Draft</span>
+        <app-buttons class="cancel-btn-mobile" [routerLink]="''" [buttonText]="'X'"></app-buttons>
     </div>
     <div class="newsurvey-card-header">
         <h2 class="newsurvey-card-header--h2">Create new survey</h2>
-        <app-buttons [routerLink]="''" [buttonText]="'Cancel'"></app-buttons>
+        <app-buttons class="cancel-btn-desktop" [routerLink]="''" [buttonText]="'Cancel'"></app-buttons>
+        
     </div>
 </main>

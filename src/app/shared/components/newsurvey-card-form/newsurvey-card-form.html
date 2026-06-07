@@ -6,7 +6,7 @@
         <p class="field-error" [class.field-error-visible]="headlineError.length > 0">{{ headlineError || ' ' }}</p>
       <div class="form-top--left-end-date">
         <h3>Set end date (optional)</h3>
-        <select class="form-top--left-select">
+        <select class="form-top--left-select desktop-only">
           <option value="" disabled selected>Choose category</option>
           <option value="after work">after work</option>
           <option value="activity">activity</option>
@@ -33,6 +33,12 @@
           (change)="onNativeDateChange($event)"
         />
       </div>
+      <select class="form-top--left-select mobile-only">
+          <option value="" disabled selected>Choose category</option>
+          <option value="after work">after work</option>
+          <option value="activity">activity</option>
+          <option value="other">other</option>
+        </select>
     </div>
     <div class="form-top--right">
       <h3>Description text (optional)</h3>
@@ -51,7 +57,7 @@
     </app-question-form>
   }
       
-      <app-buttons [buttonText]="' + Add next Question'" (click)="addQuestion()"></app-buttons>
+      <app-buttons class="add-question-btn" [buttonText]="' + Add next Question'" (click)="addQuestion()"></app-buttons>
     </div>
   </div>
 </main>

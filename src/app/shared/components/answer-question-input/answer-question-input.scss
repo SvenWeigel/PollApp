@@ -1,6 +1,7 @@
 .center-inputs {
   display: flex;
-  align-items: center;
+  width: 100%;
+  min-width: 0;
 }
 
 .center-inputs p {
@@ -11,10 +12,12 @@
 
 .center-inputs app-input-field {
   flex: 1 1 auto;
+  min-width: 0;
 }
 
 .answer-input-wrapper {
   flex: 1 1 auto;
+  min-width: 0;
 }
 
 .field-error {
@@ -33,3 +36,9 @@
   opacity: 1;
 }
 
+
+@media (max-width: 800px) {
+  .center-inputs {
+    display: block; 
+  }
+}

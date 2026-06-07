@@ -28,11 +28,12 @@ main {
 .answer-form-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  // align-items: center;
 }
 
 .form-bottom-question {
-  width: 429px;
+  width: 100%;
+  max-width: 429px;
 }
 
 .field-error {
@@ -63,4 +64,11 @@ main {
   font-family: "Nokora", sans-serif;
   font-size: 16px;
   font-weight: 700;
+}
+
+@media (max-width: 800px) {
+  .answer-form-header span{
+    font-size: 12px;
+
+  }
 }

@@ -3,10 +3,11 @@ import { NewsurveyCardHeader } from "../newsurvey-card-header/newsurvey-card-hea
 import { NewsurveyCardForm } from "../newsurvey-card-form/newsurvey-card-form";
 import { Buttons } from "../buttons/buttons";
 import { Router } from "@angular/router";
+import { Header } from "../header/header";
 
 @Component({
   selector: 'app-newsurvey-card',
-  imports: [NewsurveyCardHeader, NewsurveyCardForm, Buttons],
+  imports: [NewsurveyCardHeader, NewsurveyCardForm, Buttons, Header],
   templateUrl: './newsurvey-card.html',
   styleUrl: './newsurvey-card.scss',
 })

@@ -20,3 +20,36 @@ span {
     color: #EE9236;
   }
 }
+
+.cancel-btn-desktop {
+  display: block;
+}
+
+.cancel-btn-mobile {
+  display: none;
+}
+
+@media (max-width: 1080px) {
+  .cancel-btn-desktop {
+    display: none;
+  }
+
+  .cancel-btn-mobile {
+    display: block;
+  }
+
+  .newsurvey-card-mobile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 16px;
+    margin-top: 50px;
+  }
+}
+
+@media (max-width: 800px) {
+  .newsurvey-card-header--h2 {
+    font-size: 48px;
+  }
+}
