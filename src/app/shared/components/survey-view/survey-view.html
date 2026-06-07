@@ -3,7 +3,10 @@
   <div class="survey-view-left">
     <div class="survey-view-left-content">
       <div class="survey-view-left-header">
+        <div class="mobile-view-exit-btn">
         <span class="survey-view-left-content-status">Published</span>
+        <app-buttons class="exit-btn-mobile" [routerLink]="''" [buttonText]="'X'"></app-buttons>
+        </div>
         <div class="survey-view-left-content-header">
             <span>Ends on {{ formatDate(survey.ends) }}</span>
             <span>Category: {{ survey.category }}</span>

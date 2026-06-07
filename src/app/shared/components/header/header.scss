@@ -4,8 +4,18 @@
     justify-content: space-between;
 }
 
+.logo{
+    cursor: pointer;
+}
+
 @media (max-width: 1190px) {
     .header{
         margin: 39px 20px 40px 20px;
+    }
+}
+
+@media (max-width: 950px) {
+    .create-survey-btn {
+        display: none;
     }
 }

@@ -4,6 +4,10 @@ main {
   margin-bottom: 166px;
 }
 
+.active{
+  background-color: var(--color--p-o) !important;
+}
+
 .survey-list-header {
   display: flex;
   justify-content: space-between;
