@@ -19,6 +19,12 @@ export class QuestionForm {
   @Output() deleteQuestion = new EventEmitter<void>();
   readonly answerLabels = signal<AnswerLabel[]>(['A', 'B']);
 
+  /**
+   * Returns the validation message for the given answer label.
+   *
+   * @param label The answer label to resolve.
+   * @returns The matching error message or an empty string.
+   */
   getAnswerError(label: AnswerLabel): string {
     if (label === 'A') {
       return this.answerAError;
@@ -31,6 +37,9 @@ export class QuestionForm {
     return '';
   }
 
+  /**
+   * Adds the next available answer field until the maximum number is reached.
+   */
   addAnswer(): void {
     const currentAnswers = this.answerLabels();
 
@@ -42,6 +51,9 @@ export class QuestionForm {
     this.answerLabels.update((answers) => [...answers, nextLabel]);
   }
 
+  /**
+   * Emits the delete event for the current question block.
+   */
   delete(): void {
     this.deleteQuestion.emit();
   }

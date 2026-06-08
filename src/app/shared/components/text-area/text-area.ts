@@ -8,6 +8,11 @@ import { Component } from '@angular/core';
 })
 export class TextArea {
 
+  /**
+   * Clears the current value of the textarea element.
+   *
+   * @param textArea The textarea element to reset.
+   */
   clearInput(textArea: HTMLTextAreaElement) {
     textArea.value = '';
   }

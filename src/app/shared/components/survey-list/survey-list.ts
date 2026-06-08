@@ -32,19 +32,38 @@ export class SurveyList {
     return sortedByDaysLeft.filter((survey) => survey.category.toLowerCase() === category);
   });
 
+  /**
+   * Loads the surveys when the component is initialized.
+   */
   ngOnInit(): void {
     this.dbService.getSurveys();
   }
 
+  /**
+   * Updates the selected category filter from the category dropdown.
+   *
+   * @param event The change event emitted by the select element.
+   */
   onCategoryChange(event: Event): void {
     const target = event.target as HTMLSelectElement;
     this.selectedCategory.set(target.value);
   }
 
+  /**
+   * Switches the current survey status filter between active and past.
+   *
+   * @param status The status tab to activate.
+   */
   setStatus(status: 'active' | 'past'): void {
     this.selectedStatus.set(status);
   }
 
+  /**
+   * Calculates the remaining number of days until a survey ends.
+   *
+   * @param ends The survey end date.
+   * @returns The number of remaining days, never below zero.
+   */
   private getDaysLeft(ends: string): number {
     const today = new Date();
     const endDate = new Date(ends);
@@ -52,6 +71,12 @@ export class SurveyList {
     return Math.max(0, Math.ceil(diffInMs / (1000 * 60 * 60 * 24)));
   }
 
+  /**
+   * Checks whether a survey has already passed its end date.
+   *
+   * @param ends The survey end date.
+   * @returns True when the survey is already expired.
+   */
   private isSurveyPast(ends: string): boolean {
     const now = new Date();
     const endDate = new Date(ends);

@@ -14,10 +14,22 @@ export class SurveyViewQuestion {
   readonly isPast = input<boolean>(false);
   readonly voteToggled = output<VoteToggleEvent>();
 
+  /**
+   * Converts an answer index into its matching letter-based answer key.
+   *
+   * @param index The zero-based answer index.
+   * @returns The corresponding answer key.
+   */
   label(index: number): AnswerKey {
     return String.fromCharCode(65 + index) as AnswerKey;
   }
 
+  /**
+   * Emits the vote toggle event when a checkbox state changes.
+   *
+   * @param event The checkbox change event.
+   * @param index The zero-based answer index.
+   */
   onCheckboxChange(event: Event, index: number): void {
     const checkbox = event.target as HTMLInputElement;
 

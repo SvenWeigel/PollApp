@@ -16,6 +16,9 @@ export class SurveyView {
   private readonly route = inject(ActivatedRoute);
   readonly areResultsVisible = signal(true);
 
+  /**
+   * Loads the survey and its questions based on the current route parameter.
+   */
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
       const idParam = params.get('id');
@@ -31,6 +34,12 @@ export class SurveyView {
     });
   }
 
+  /**
+   * Formats a date string for display in German locale.
+   *
+   * @param value The raw date value.
+   * @returns The formatted date or `-` when no value is present.
+   */
   formatDate(value: string): string {
     if (!value) {
       return '-';
@@ -39,6 +48,12 @@ export class SurveyView {
     return new Intl.DateTimeFormat('de-DE').format(new Date(value));
   }
 
+  /**
+   * Adds or removes a vote for a question unless the survey has already expired.
+   *
+   * @param questionId The question being voted on.
+   * @param event The toggle payload describing the answer key and checked state.
+   */
   async onVoteToggled(questionId: number, event: VoteToggleEvent): Promise<void> {
     const survey = this.dbService.selectedSurvey();
     if (!survey) {
@@ -57,10 +72,19 @@ export class SurveyView {
     await this.dbService.removeVote(survey.id, questionId, event.answerKey);
   }
 
+  /**
+   * Toggles the visibility of the results panel.
+   */
   seeResults(): void {
     this.areResultsVisible.update((visible) => !visible);
   }
 
+  /**
+   * Checks whether a survey is already past its end date.
+   *
+   * @param ends The survey end date.
+   * @returns True when the survey is expired.
+   */
   isPastSurvey(ends: string): boolean {
     const now = new Date();
     const endDate = new Date(ends);

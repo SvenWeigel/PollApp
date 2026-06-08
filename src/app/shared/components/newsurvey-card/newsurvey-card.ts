@@ -16,6 +16,9 @@ export class NewsurveyCard {
   private readonly router = inject(Router);
   readonly isPublishOverlayVisible = signal(false);
 
+  /**
+   * Publishes the survey form and shows the success overlay when saving succeeds.
+   */
   async publish(): Promise<void> {
     if (!this.form) {
       return;
@@ -28,6 +31,9 @@ export class NewsurveyCard {
     }
   }
 
+  /**
+   * Closes the publish success overlay and navigates back to the landing page.
+   */
   async closePublishOverlay(): Promise<void> {
     this.isPublishOverlayVisible.set(false);
     await this.router.navigateByUrl('/');

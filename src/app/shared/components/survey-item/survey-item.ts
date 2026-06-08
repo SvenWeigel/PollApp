@@ -11,6 +11,11 @@ import { Survey } from '../../interface/survey.interface';
 export class SurveyItem {
   readonly survey = input.required<Survey>();
 
+  /**
+   * Calculates how many full days remain until the survey end date.
+   *
+   * @returns The number of remaining days, never below zero.
+   */
   getDaysLeft(): number {
     const today = new Date();
     const endDate = new Date(this.survey().ends);
