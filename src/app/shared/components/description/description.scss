@@ -47,7 +47,7 @@ h1{
 @media (max-width: 1190px) {
     .inline-main-image {
         display: block;
-        text-align: center;
+        align-self: center;
     }
 
     .side-main-image {
@@ -59,7 +59,8 @@ h1{
     }
 
     main{
-        padding: 0 20px;
+        padding: 0 0px;
+        justify-content: center;
     }
 }
 
