@@ -22,6 +22,7 @@
             [questionNumber]="i + 1"
             [questionText]="question.question"
             [answers]="question.answers"
+            [isPast]="isPastSurvey(survey.ends)"
             (voteToggled)="onVoteToggled(question.id, $event)"
           ></app-survey-view-question>
         }

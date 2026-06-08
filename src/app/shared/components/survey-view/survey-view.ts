@@ -45,6 +45,10 @@ export class SurveyView {
       return;
     }
 
+    if (this.isPastSurvey(survey.ends)) {
+      return;
+    }
+
     if (event.checked) {
       await this.dbService.addVote(survey.id, questionId, event.answerKey);
       return;
@@ -55,5 +59,12 @@ export class SurveyView {
 
   seeResults(): void {
     this.areResultsVisible.update((visible) => !visible);
+  }
+
+  isPastSurvey(ends: string): boolean {
+    const now = new Date();
+    const endDate = new Date(ends);
+    endDate.setHours(23, 59, 59, 999);
+    return endDate.getTime() < now.getTime();
   }
 }

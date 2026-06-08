@@ -11,6 +11,7 @@ export class SurveyViewQuestion {
   readonly questionNumber = input<number>(1);
   readonly questionText = input<string>('');
   readonly answers = input<string[]>([]);
+  readonly isPast = input<boolean>(false);
   readonly voteToggled = output<VoteToggleEvent>();
 
   label(index: number): AnswerKey {

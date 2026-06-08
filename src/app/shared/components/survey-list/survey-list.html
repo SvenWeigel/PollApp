@@ -1,8 +1,8 @@
 <main class="content">
     <div class="survey-list-header">
         <div class="survey-list-header--btn">
-            <button class="activ-surveys survey-btn active">Active survey</button>
-            <button class="past-surveys survey-btn">Past survey</button>
+            <button class="activ-surveys survey-btn" [class.active]="selectedStatus() === 'active'" [attr.aria-pressed]="selectedStatus() === 'active'" (click)="setStatus('active')">Active survey</button>
+            <button class="past-surveys survey-btn" [class.active]="selectedStatus() === 'past'" [attr.aria-pressed]="selectedStatus() === 'past'" (click)="setStatus('past')">Past survey</button>
         </div>
         <div class="survey-list-header--sort">
             <select name="SortByCategories" id="SortByCategories" [value]="selectedCategory()" (change)="onCategoryChange($event)">
