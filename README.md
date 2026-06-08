@@ -2,6 +2,56 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.6.
 
+## Quick start
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Start the development server:
+
+```bash
+npm start
+```
+
+The app will be available at `http://localhost:4200/`.
+
+## Styling with Bootstrap
+
+If you want to use Bootstrap in this project:
+
+1. Install Bootstrap:
+
+```bash
+npm install bootstrap
+```
+
+2. Import Bootstrap in `src/styles.scss`:
+
+```scss
+@use 'bootstrap/scss/bootstrap';
+```
+
+3. Use Bootstrap classes in your templates, for example:
+
+```html
+<button class="btn btn-primary">Save survey</button>
+```
+
+Optional: if you need Bootstrap Icons as well:
+
+```bash
+npm install bootstrap-icons
+```
+
+Then add this to `src/styles.scss`:
+
+```scss
+@import 'bootstrap-icons/font/bootstrap-icons.css';
+```
+
 ## Development server
 
 To start a local development server, run:
