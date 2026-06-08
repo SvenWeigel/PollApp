@@ -1,8 +1,8 @@
-import { Component, ViewChild, inject } from '@angular/core';
+import { Component, ViewChild, inject, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { NewsurveyCardHeader } from "../newsurvey-card-header/newsurvey-card-header";
 import { NewsurveyCardForm } from "../newsurvey-card-form/newsurvey-card-form";
 import { Buttons } from "../buttons/buttons";
-import { Router } from "@angular/router";
 import { Header } from "../header/header";
 
 @Component({
@@ -14,15 +14,22 @@ import { Header } from "../header/header";
 export class NewsurveyCard {
   @ViewChild(NewsurveyCardForm) form?: NewsurveyCardForm;
   private readonly router = inject(Router);
+  readonly isPublishOverlayVisible = signal(false);
 
   async publish(): Promise<void> {
     if (!this.form) {
       return;
     }
-
+    
     const success = await this.form.publishSurvey();
     if (success) {
-      await this.router.navigateByUrl('/');
+      this.form.resetForm();
+      this.isPublishOverlayVisible.set(true);
     }
+  }
+
+  async closePublishOverlay(): Promise<void> {
+    this.isPublishOverlayVisible.set(false);
+    await this.router.navigateByUrl('/');
   }
 }

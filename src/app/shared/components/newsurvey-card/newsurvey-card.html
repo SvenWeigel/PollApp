@@ -5,3 +5,13 @@
 <app-newsurvey-card-form></app-newsurvey-card-form>
 <app-buttons [enableHoverEffect]="true" [hoverIconSrc]="'/assets/check.svg'" [hoverIconAlt]="'Check icon'" [buttonText]="'Publish'" (click)="publish()"></app-buttons>
 </main>
+
+@if (isPublishOverlayVisible()) {
+	<div class="publish-overlay-backdrop" (click)="closePublishOverlay()">
+		<div class="publish-overlay-card" role="dialog" aria-modal="true" aria-label="Publish success message" (click)="$event.stopPropagation()">
+			<button class="publish-overlay-close" type="button" aria-label="Close" (click)="closePublishOverlay()">X</button>
+			<span class="publish-overlay-head">Published</span>
+			<h3>Your survey is now published!</h3>
+		</div>
+	</div>
+}

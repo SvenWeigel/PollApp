@@ -70,9 +70,18 @@ export class NewsurveyCardForm {
 
     const headline = this.readInputValue(root, '.form-top--left app-input-field:first-of-type input');
     const categorySelect = root.querySelector('.form-top--left-end-date select') as HTMLSelectElement | null;
-    const ends = this.endsValue;
+    const todayRaw = this.getTodayRawDate();
+    const ends = this.endsValue || this.formatDateForDisplay(todayRaw);
     const description = this.readTextareaValue(root, '.form-top--right textarea');
     const category = categorySelect?.value?.trim() || 'other';
+
+    if (!this.endsValue) {
+      this.endsValue = ends;
+      const dateInput = this.nativeDateInput?.nativeElement;
+      if (dateInput) {
+        dateInput.value = todayRaw;
+      }
+    }
 
     if (!headline) {
       this.headlineError = '*required';
@@ -123,6 +132,37 @@ export class NewsurveyCardForm {
     } catch (error) {
       this.headlineError = error instanceof Error ? error.message : 'Speichern fehlgeschlagen.';
       return false;
+    }
+  }
+
+  resetForm(): void {
+    this.clearAllErrors();
+    this.endsValue = '';
+    this.questions = [Date.now()];
+
+    const root = this.formRoot?.nativeElement;
+    if (!root) {
+      return;
+    }
+
+    const inputs = Array.from(root.querySelectorAll('input')) as HTMLInputElement[];
+    for (const input of inputs) {
+      if (input.type === 'checkbox') {
+        input.checked = false;
+        continue;
+      }
+
+      input.value = '';
+    }
+
+    const textareas = Array.from(root.querySelectorAll('textarea')) as HTMLTextAreaElement[];
+    for (const textarea of textareas) {
+      textarea.value = '';
+    }
+
+    const selects = Array.from(root.querySelectorAll('select')) as HTMLSelectElement[];
+    for (const select of selects) {
+      select.selectedIndex = 0;
     }
   }
 
@@ -233,5 +273,13 @@ export class NewsurveyCardForm {
     }
 
     return `${year}.${month}.${day}`;
+  }
+
+  private getTodayRawDate(): string {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
   }
 }
