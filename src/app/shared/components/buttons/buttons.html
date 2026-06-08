@@ -1,3 +1,9 @@
 @if (showButton()) {
-  <button class="new-survey-btn" id="new-survey-btn">{{ buttonText() }}</button>
+  <button
+    class="new-survey-btn"
+    id="new-survey-btn"
+    [style.background-color]="buttonBgColor()"
+  >
+    {{ buttonText() }}
+  </button>
 }

@@ -8,5 +8,6 @@ import { Component, input } from '@angular/core';
 })
 export class Buttons {
   readonly buttonText = input<string>('New survey');
+  readonly buttonBgColor = input<string>('var(--color--s-o)');
   readonly showButton = input<boolean>(true);
 }
