@@ -27,7 +27,7 @@
           ></app-survey-view-question>
         }
       </div>
-      <app-buttons class="survey-view-left-footer" [routerLink]="''" [buttonText]="'Complete survey'"></app-buttons>
+      <app-buttons class="survey-view-left-footer" [enableHoverEffect]="true" [hoverIconSrc]="'/assets/check.svg'" [hoverIconAlt]="'Check icon'" [buttonText]="'Complete survey'" [routerLink]="''"></app-buttons>
     </div>
   </div>
   <button (click)="seeResults()" class="see-results-button">

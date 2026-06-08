@@ -3,15 +3,49 @@
     border-radius: 10px;
     padding: 12px 16px 12px 16px;
     background-color: var(--color--s-o);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    overflow: hidden;
     font-family: "Nokora", sans-serif;
     font-size: 18px;
     font-weight: 700;
     font-style: bold;
     line-height: 100%;
     color: black;
+    cursor: pointer;
+    transition: background-color 650ms ease, transform 650ms ease, gap 650ms ease, padding-left 650ms ease, padding-right 650ms ease;
 }
 
-.new-survey-btn:hover{
-    background-color: var(--color--p-o);
-    cursor: pointer;
+.hover-icon {
+    width: 0;
+    opacity: 0;
+    transform: translateX(8px);
+    transition: width 650ms ease, opacity 650ms ease, transform 650ms ease;
+}
+
+.hover-icon img {
+    width: 18px;
+    height: 18px;
+    display: block;
+}
+
+@media (hover: hover) and (pointer: fine) and (min-width: 768px) {
+    .new-survey-btn:hover{
+        background-color: var(--color--p-o) !important;
+    }
+
+    .new-survey-btn.expand-hover:hover {
+        transform: translateX(-8px);
+        padding-left: 24px;
+        padding-right: 24px;
+        gap: 10px;
+    }
+
+    .new-survey-btn.expand-hover:hover .hover-icon {
+        width: 18px;
+        opacity: 1;
+        transform: translateX(0);
+    }
 }

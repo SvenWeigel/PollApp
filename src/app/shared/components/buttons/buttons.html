@@ -1,9 +1,15 @@
 @if (showButton()) {
   <button
     class="new-survey-btn"
+    [class.expand-hover]="enableHoverEffect()"
     id="new-survey-btn"
     [style.background-color]="buttonBgColor()"
   >
-    {{ buttonText() }}
+    <span class="btn-label">{{ buttonText() }}</span>
+    @if (hoverIconSrc()) {
+      <span class="hover-icon" aria-hidden="true">
+        <img [src]="hoverIconSrc()" [alt]="hoverIconAlt()" />
+      </span>
+    }
   </button>
 }
