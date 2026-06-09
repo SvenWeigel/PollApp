@@ -9,6 +9,7 @@ export type NewQuestion = {
   answerB: string;
   answerC?: string;
   answerD?: string;
+  allowMultipleAnswers?: boolean;
 };
 
 export type NewSurvey = {
@@ -22,6 +23,7 @@ export type SurveyQuestion = {
   id: number;
   question: string;
   answers: string[];
+  allowMultipleAnswers: boolean;
 };
 
 export type AnswerKey = 'A' | 'B' | 'C' | 'D';
@@ -187,21 +189,33 @@ export class Supabase {
   }
 
   /**
-   * Inserts survey questions and falls back to the alternate column name when needed.
+   * Inserts survey questions and falls back when some columns are unavailable.
    *
    * @param surveyId The created survey id.
    * @param questions The questions to persist.
    */
   private async insertSurveyQuestions(surveyId: number, questions: NewQuestion[]): Promise<void> {
-    const { error } = await this.supabase
+    const preferredInsert = await this.supabase
       .from('questions')
-      .insert(this.mapQuestionRows(surveyId, questions, 'question'));
+      .insert(this.mapQuestionRows(surveyId, questions, 'question', true));
 
-    if (!error) {
+    if (!preferredInsert.error) {
       return;
     }
 
-    await this.insertSurveyQuestionsFallback(surveyId, questions, error.message);
+    const noMultiColumnInsert = await this.supabase
+      .from('questions')
+      .insert(this.mapQuestionRows(surveyId, questions, 'question', false));
+
+    if (!noMultiColumnInsert.error) {
+      return;
+    }
+
+    await this.insertSurveyQuestionsFallback(
+      surveyId,
+      questions,
+      preferredInsert.error.message || noMultiColumnInsert.error.message,
+    );
   }
 
   /**
@@ -216,12 +230,22 @@ export class Supabase {
     questions: NewQuestion[],
     errorMessage: string,
   ): Promise<void> {
-    const { error } = await this.supabase
+    const withMultiColumn = await this.supabase
       .from('questions')
-      .insert(this.mapQuestionRows(surveyId, questions, 'questions'));
+      .insert(this.mapQuestionRows(surveyId, questions, 'questions', true));
 
-    if (error) {
-      throw new Error(`Questions konnten nicht gespeichert werden: ${error.message || errorMessage}`);
+    if (!withMultiColumn.error) {
+      return;
+    }
+
+    const withoutMultiColumn = await this.supabase
+      .from('questions')
+      .insert(this.mapQuestionRows(surveyId, questions, 'questions', false));
+
+    if (withoutMultiColumn.error) {
+      throw new Error(
+        `Questions konnten nicht gespeichert werden: ${withoutMultiColumn.error.message || withMultiColumn.error.message || errorMessage}`,
+      );
     }
   }
 
@@ -231,21 +255,31 @@ export class Supabase {
    * @param surveyId The survey id.
    * @param questions The questions to transform.
    * @param questionColumn The target question column name.
+   * @param includeAllowMultipleColumn Whether to include the optional allow-multiple column.
    * @returns The mapped database rows.
    */
   private mapQuestionRows(
     surveyId: number,
     questions: NewQuestion[],
     questionColumn: 'question' | 'questions',
-  ): Array<Record<string, string | number | null>> {
-    return questions.map((q) => ({
-      survey_id: surveyId,
-      [questionColumn]: q.question,
-      answer_A: q.answerA,
-      answer_B: q.answerB,
-      answer_C: q.answerC ?? null,
-      answer_D: q.answerD ?? null,
-    }));
+    includeAllowMultipleColumn: boolean,
+  ): Array<Record<string, string | number | boolean | null>> {
+    return questions.map((q) => {
+      const row: Record<string, string | number | boolean | null> = {
+        survey_id: surveyId,
+        [questionColumn]: q.question,
+        answer_A: q.answerA,
+        answer_B: q.answerB,
+        answer_C: q.answerC ?? null,
+        answer_D: q.answerD ?? null,
+      };
+
+      if (includeAllowMultipleColumn) {
+        row['allow_multiple_answers'] = q.allowMultipleAnswers ?? false;
+      }
+
+      return row;
+    });
   }
 
   /**
@@ -317,7 +351,35 @@ export class Supabase {
       id: Number(row['id']),
       question,
       answers: this.readQuestionAnswers(row),
+      allowMultipleAnswers: this.readAllowMultipleAnswers(row),
     };
+  }
+
+  /**
+   * Reads the multi-answer setting from a question row.
+   *
+   * Rows without this column are treated as multi-answer for backward compatibility.
+   *
+   * @param row The raw database row.
+   * @returns True when multiple answers are allowed.
+   */
+  private readAllowMultipleAnswers(row: Record<string, unknown>): boolean {
+    const value = row['allow_multiple_answers'];
+
+    if (typeof value === 'boolean') {
+      return value;
+    }
+
+    if (typeof value === 'number') {
+      return value !== 0;
+    }
+
+    if (typeof value === 'string') {
+      const normalized = value.trim().toLowerCase();
+      return normalized === '1' || normalized === 'true';
+    }
+
+    return true;
   }
 
   /**

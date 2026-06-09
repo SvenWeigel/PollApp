@@ -11,7 +11,13 @@
     <div class="answer-form-header">
       <p>Answer</p>
       <div>
-        <input type="checkbox" name="answer" id="multi-answer" />
+        <input
+          type="checkbox"
+          [name]="'answer-' + questionNumber"
+          [id]="'multi-answer-' + questionNumber"
+          [checked]="allowMultipleAnswers"
+          (change)="onAllowMultipleChanged($event)"
+        />
         <span>Allow multiple answers.</span>
       </div>
     </div>

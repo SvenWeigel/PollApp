@@ -4,6 +4,7 @@ import { TextArea } from "../text-area/text-area";
 import { QuestionForm } from "../question-form/question-form";
 import { Buttons } from "../buttons/buttons";
 import { NewQuestion, Supabase } from '../../../supabase';
+import type { AllowMultipleChangedEvent } from '../question-form/question-form';
 
 @Component({
   selector: 'app-newsurvey-card-form',
@@ -23,6 +24,7 @@ export class NewsurveyCardForm {
   questionErrors: Record<number, string> = {};
   answerAErrors: Record<number, string> = {};
   answerBErrors: Record<number, string> = {};
+  allowMultipleAnswersByQuestion: Record<number, boolean> = {};
 
   /**
    * Returns the minimum selectable raw date for the native date input.
@@ -90,6 +92,16 @@ export class NewsurveyCardForm {
     }
 
     this.questions.splice(index, 1);
+    this.reindexAllowMultipleSettingsAfterDelete(index);
+  }
+
+  /**
+   * Stores the current multi-answer setting for one question.
+   *
+   * @param event The changed setting and its question index.
+   */
+  onAllowMultipleChanged(event: AllowMultipleChangedEvent): void {
+    this.allowMultipleAnswersByQuestion[event.questionIndex] = event.allowMultipleAnswers;
   }
 
   /**
@@ -131,6 +143,7 @@ export class NewsurveyCardForm {
     this.clearAllErrors();
     this.endsValue = '';
     this.questions = [Date.now()];
+    this.allowMultipleAnswersByQuestion = {};
 
     const root = this.formRoot?.nativeElement;
     if (!root) {
@@ -530,7 +543,7 @@ export class NewsurveyCardForm {
   private collectQuestions(root: HTMLElement): NewQuestion[] {
     const questionForms = Array.from(root.querySelectorAll('app-question-form'));
     return questionForms
-      .map((formEl) => this.mapQuestionFormToQuestion(formEl))
+      .map((formEl, index) => this.mapQuestionFormToQuestion(formEl, index))
       .filter((question): question is NewQuestion => question !== null);
   }
 
@@ -538,9 +551,10 @@ export class NewsurveyCardForm {
    * Maps a single question form element to a survey question object.
    *
    * @param formEl The question form host element.
+    * @param index The zero-based question index.
    * @returns A question object or `null` when the form is incomplete.
    */
-  private mapQuestionFormToQuestion(formEl: Element): NewQuestion | null {
+    private mapQuestionFormToQuestion(formEl: Element, index: number): NewQuestion | null {
     const questionInput = formEl.querySelector('.form-bottom-question input') as HTMLInputElement | null;
     const answerInputs = Array.from(formEl.querySelectorAll('.answer-form-body app-answer-question-input input')) as HTMLInputElement[];
     const questionText = questionInput?.value?.trim() ?? '';
@@ -550,7 +564,7 @@ export class NewsurveyCardForm {
       return null;
     }
 
-    return this.buildQuestion(questionText, answers);
+    return this.buildQuestion(questionText, answers, index);
   }
 
   /**
@@ -570,16 +584,39 @@ export class NewsurveyCardForm {
    *
    * @param questionText The question label.
    * @param answers The collected answers.
+   * @param index The zero-based question index.
    * @returns The mapped question payload.
    */
-  private buildQuestion(questionText: string, answers: string[]): NewQuestion {
+  private buildQuestion(questionText: string, answers: string[], index: number): NewQuestion {
     return {
       question: questionText,
       answerA: answers[0],
       answerB: answers[1],
       answerC: answers[2],
       answerD: answers[3],
+      allowMultipleAnswers: this.allowMultipleAnswersByQuestion[index] ?? false,
     };
+  }
+
+  /**
+   * Reindexes multi-answer settings after a question deletion.
+   *
+   * @param deletedIndex The index that was removed.
+   */
+  private reindexAllowMultipleSettingsAfterDelete(deletedIndex: number): void {
+    const nextMap: Record<number, boolean> = {};
+
+    for (const [rawIndex, value] of Object.entries(this.allowMultipleAnswersByQuestion)) {
+      const index = Number(rawIndex);
+
+      if (index < deletedIndex) {
+        nextMap[index] = value;
+      } else if (index > deletedIndex) {
+        nextMap[index - 1] = value;
+      }
+    }
+
+    this.allowMultipleAnswersByQuestion = nextMap;
   }
 
   /**
