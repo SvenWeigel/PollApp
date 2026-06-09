@@ -1,6 +1,6 @@
 <main>
   <span class="survey-view-question-title">{{ questionNumber() }}. {{ questionText() }}</span>
-  <p class="survey-view-question-description">{{ allowMultipleAnswers() ? 'More than one answers are possible.' : 'Only one answer can be selected.' }}</p>
+  <p class="survey-view-question-description">{{ allowMultipleAnswers() ? 'Multiple answers possible.' : 'Only one answer can be selected.' }}</p>
 
   @for (answer of answers(); track $index; let i = $index) {
     <div class="form-check">

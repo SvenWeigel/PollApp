@@ -1,4 +1,4 @@
-<main #formRoot (input)="onFormInput($event)">
+<form #formRoot novalidate (input)="onFormInput($event)" (submit)="$event.preventDefault()">
   <div class="form-top">
     <div class="form-top--left">
       <h3>Survey name</h3>
@@ -64,4 +64,4 @@
       <app-buttons class="add-question-btn" [buttonBgColor]="'rgba(255, 183, 112, 0.3)'" [buttonText]="' + Add next Question'" (click)="addQuestion()"></app-buttons>
     </div>
   </div>
-</main>
+</form>
