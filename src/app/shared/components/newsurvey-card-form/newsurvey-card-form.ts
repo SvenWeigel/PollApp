@@ -3,10 +3,11 @@ import { InputField } from "../input-field/input-field";
 import { TextArea } from "../text-area/text-area";
 import { QuestionForm } from "../question-form/question-form";
 import { Buttons } from "../buttons/buttons";
-import { NewQuestion, Supabase } from '../../../supabase';
+import { Supabase } from '../../../supabase';
 import type { AllowMultipleChangedEvent } from '../question-form/question-form';
 import type { SurveyPayload } from '../../interface/survey-payload.interface';
 import type { PublishSurveyContext } from '../../interface/publish-survey-context.interface';
+import type { NewQuestion } from '../../../types/supabase.types';
 
 @Component({
   selector: 'app-newsurvey-card-form',

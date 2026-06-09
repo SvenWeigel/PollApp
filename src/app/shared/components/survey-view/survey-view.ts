@@ -3,7 +3,8 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Buttons } from "../buttons/buttons";
 import { SurveyViewQuestion } from "../survey-view-question/survey-view-question";
 import { SurveyViewChart } from "../survey-view-chart/survey-view-chart";
-import { Supabase, VoteToggleEvent } from '../../../supabase';
+import { Supabase } from '../../../supabase';
+import type { VoteToggleEvent } from '../../../types/supabase.types';
 
 @Component({
   selector: 'app-survey-view',

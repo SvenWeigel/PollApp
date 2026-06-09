@@ -1,5 +1,5 @@
 import { Component, computed, input } from '@angular/core';
-import { AnswerKey } from '../../../supabase';
+import type { AnswerKey } from '../../../types/supabase.types';
 
 @Component({
   selector: 'app-survey-view-chart',

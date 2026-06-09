@@ -2,38 +2,9 @@ import { Injectable, signal } from '@angular/core';
 import { createClient, RealtimeChannel } from '@supabase/supabase-js';
 import { environment } from '../environments/environment';
 import { Survey } from './shared/interface/survey.interface';
+import type { AnswerKey, NewQuestion, NewSurvey, QuestionVoteCounts, SurveyQuestion, VoteToggleEvent } from './types/supabase.types';
 
-export type NewQuestion = {
-  question: string;
-  answerA: string;
-  answerB: string;
-  answerC?: string;
-  answerD?: string;
-  allowMultipleAnswers?: boolean;
-};
-
-export type NewSurvey = {
-  headline: string;
-  description: string;
-  ends: string;
-  category: string;
-};
-
-export type SurveyQuestion = {
-  id: number;
-  question: string;
-  answers: string[];
-  allowMultipleAnswers: boolean;
-};
-
-export type AnswerKey = 'A' | 'B' | 'C' | 'D';
-
-export type VoteToggleEvent = {
-  answerKey: AnswerKey;
-  checked: boolean;
-};
-
-type QuestionVoteCounts = Record<number, Record<AnswerKey, number>>;
+export type { AnswerKey, NewQuestion, NewSurvey, SurveyQuestion, VoteToggleEvent } from './types/supabase.types';
 
 @Injectable({
   providedIn: 'root',

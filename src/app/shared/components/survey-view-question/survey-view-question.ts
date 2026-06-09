@@ -1,5 +1,5 @@
 import { Component, input, output } from '@angular/core';
-import { AnswerKey, VoteToggleEvent } from '../../../supabase';
+import type { AnswerKey, VoteToggleEvent } from '../../../types/supabase.types';
 
 @Component({
   selector: 'app-survey-view-question',
