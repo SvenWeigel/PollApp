@@ -46,6 +46,14 @@
     }
 }
 
+.survey-item--disabled {
+    cursor: default;
+
+    &:hover {
+        background-color: rgba(217, 217, 217, 0.08);
+    }
+}
+
 @media (max-width: 575px) {
     .survey-item {
         width: 100%;

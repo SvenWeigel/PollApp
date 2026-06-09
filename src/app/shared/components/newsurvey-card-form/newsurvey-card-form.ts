@@ -22,6 +22,7 @@ export class NewsurveyCardForm {
   private readonly dbService = inject(Supabase);
 
   questions = [0];
+  private nextQuestionId = 1;
   endsValue = '';
   headlineError = '';
   questionErrors: Record<number, string> = {};
@@ -78,24 +79,33 @@ export class NewsurveyCardForm {
   /**
    * Adds another question block until the maximum number of questions is reached.
    */
-  addQuestion() {
+  addQuestion(): void {
     if (this.questions.length < 4) {
-      this.questions.push(this.questions.length);
+      this.questions.push(this.nextQuestionId);
+      this.nextQuestionId += 1;
     }
   }
 
   /**
-   * Removes a question block when more than one question remains.
+   * Removes a question block by id when more than one question remains.
    *
-   * @param index The index of the question to remove.
+   * @param questionId The unique id of the question to remove.
    */
-  deleteQuestion(index: number) {
+  deleteQuestion(questionId: number): void {
     if (this.questions.length <= 1) {
+      return;
+    }
+
+    const index = this.questions.indexOf(questionId);
+    if (index < 0) {
       return;
     }
 
     this.questions.splice(index, 1);
     this.reindexAllowMultipleSettingsAfterDelete(index);
+    this.questionErrors = this.reindexValidationMapAfterDelete(this.questionErrors, index);
+    this.answerAErrors = this.reindexValidationMapAfterDelete(this.answerAErrors, index);
+    this.answerBErrors = this.reindexValidationMapAfterDelete(this.answerBErrors, index);
   }
 
   /**
@@ -182,7 +192,8 @@ export class NewsurveyCardForm {
   resetForm(): void {
     this.clearAllErrors();
     this.endsValue = '';
-    this.questions = [Date.now()];
+    this.questions = [0];
+    this.nextQuestionId = 1;
     this.allowMultipleAnswersByQuestion = {};
 
     const root = this.formRoot?.nativeElement;
@@ -652,6 +663,32 @@ export class NewsurveyCardForm {
     }
 
     this.allowMultipleAnswersByQuestion = nextMap;
+  }
+
+  /**
+   * Reindexes validation maps after one question index was removed.
+   *
+   * @param source The original validation map.
+   * @param deletedIndex The removed question index.
+   * @returns A reindexed validation map.
+   */
+  private reindexValidationMapAfterDelete(
+    source: Record<number, string>,
+    deletedIndex: number,
+  ): Record<number, string> {
+    const nextMap: Record<number, string> = {};
+
+    for (const [rawIndex, message] of Object.entries(source)) {
+      const index = Number(rawIndex);
+
+      if (index < deletedIndex) {
+        nextMap[index] = message;
+      } else if (index > deletedIndex) {
+        nextMap[index - 1] = message;
+      }
+    }
+
+    return nextMap;
   }
 
   /**

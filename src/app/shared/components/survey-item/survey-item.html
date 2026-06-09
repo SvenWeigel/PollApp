@@ -1,6 +1,14 @@
-<div class="survey-item" [routerLink]="['/survey', survey().id]">
-    <span class="survey-item--head">{{ survey().category }}</span>
-    <h3>{{ survey().headline }}</h3>
-    <span class="survey-item--time-left">{{ getDaysLeft() }} days left</span>
-</div>
+@if (isClickable()) {
+    <div class="survey-item" [routerLink]="['/survey', survey().id]">
+        <span class="survey-item--head">{{ survey().category }}</span>
+        <h3>{{ survey().headline }}</h3>
+        <span class="survey-item--time-left">{{ getDaysLeft() }} days left</span>
+    </div>
+} @else {
+    <div class="survey-item survey-item--disabled" aria-disabled="true">
+        <span class="survey-item--head">{{ survey().category }}</span>
+        <h3>{{ survey().headline }}</h3>
+        <span class="survey-item--time-left">{{ getDaysLeft() }} days left</span>
+    </div>
+}
 

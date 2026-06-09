@@ -48,7 +48,7 @@
   </div>
   <div class="form-bottom">
     <div class="form-bottom--content">
-      @for (q of questions; track $index; let i = $index) {
+      @for (q of questions; track q; let i = $index) {
     <app-question-form
       [questionIndex]="i"
       [questionNumber]="i + 1"
@@ -57,7 +57,7 @@
       [answerBError]="getAnswerBError(i)"
       [allowMultipleAnswers]="allowMultipleAnswersByQuestion[i]"
       (allowMultipleChanged)="onAllowMultipleChanged($event)"
-      (deleteQuestion)="deleteQuestion(i)">
+      (deleteQuestion)="deleteQuestion(q)">
     </app-question-form>
   }
       

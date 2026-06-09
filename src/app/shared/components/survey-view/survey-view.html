@@ -28,7 +28,10 @@
           ></app-survey-view-question>
         }
       </div>
-      <app-buttons class="survey-view-left-footer" [enableHoverEffect]="true" [hoverIconSrc]="'/assets/check.svg'" [hoverIconAlt]="'Check icon'" [buttonText]="'Complete survey'" [routerLink]="''"></app-buttons>
+      <app-buttons class="survey-view-left-footer" [enableHoverEffect]="true" [hoverIconSrc]="'/assets/check.svg'" [hoverIconAlt]="'Check icon'" [buttonText]="isSavingVotes() ? 'Saving...' : 'Complete survey'" (click)="completeSurvey()"></app-buttons>
+      @if (voteSaveError()) {
+        <p class="survey-save-error">{{ voteSaveError() }}</p>
+      }
     </div>
   </div>
   <button (click)="seeResults()" class="see-results-button">
@@ -53,7 +56,7 @@
           [questionNumber]="i + 1"
           [questionText]="question.question"
           [answers]="question.answers"
-          [counts]="dbService.getVoteCountsForQuestion(question.id)"
+          [counts]="getLiveCountsForQuestion(question.id)"
         ></app-survey-view-chart>
       }
   </div>

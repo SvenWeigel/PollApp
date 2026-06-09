@@ -10,6 +10,7 @@ import { Survey } from '../../interface/survey.interface';
 })
 export class SurveyItem {
   readonly survey = input.required<Survey>();
+  readonly isClickable = input(true);
 
   /**
    * Calculates how many full days remain until the survey end date.

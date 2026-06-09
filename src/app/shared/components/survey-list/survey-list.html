@@ -15,7 +15,7 @@
     </div>
     <div class="survey-list">
         @for (survey of filteredSurveys(); track survey.id) {
-            <app-survey-item [survey]="survey"></app-survey-item>
+            <app-survey-item [survey]="survey" [isClickable]="selectedStatus() !== 'past'"></app-survey-item>
         }
     </div>
 </main>

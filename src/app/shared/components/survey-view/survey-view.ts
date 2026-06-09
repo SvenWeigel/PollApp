@@ -1,10 +1,10 @@
 import { Component, inject, signal } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Buttons } from "../buttons/buttons";
 import { SurveyViewQuestion } from "../survey-view-question/survey-view-question";
 import { SurveyViewChart } from "../survey-view-chart/survey-view-chart";
 import { Supabase } from '../../../supabase';
-import type { VoteToggleEvent } from '../../../types/supabase.types';
+import type { AnswerKey, VoteToggleEvent } from '../../../types/supabase.types';
 
 @Component({
   selector: 'app-survey-view',
@@ -15,7 +15,11 @@ import type { VoteToggleEvent } from '../../../types/supabase.types';
 export class SurveyView {
   readonly dbService = inject(Supabase);
   private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   readonly areResultsVisible = signal(true);
+  readonly isSavingVotes = signal(false);
+  readonly voteSaveError = signal('');
+  private pendingVoteStates: Record<number, Partial<Record<AnswerKey, boolean>>> = {};
 
   /**
    * Loads the survey and its questions based on the current route parameter.
@@ -28,9 +32,13 @@ export class SurveyView {
       if (!idParam || Number.isNaN(surveyId)) {
         this.dbService.selectedSurvey.set(null);
         this.dbService.selectedSurveyQuestions.set([]);
+        this.pendingVoteStates = {};
+        this.voteSaveError.set('');
         return;
       }
 
+      this.pendingVoteStates = {};
+      this.voteSaveError.set('');
       this.dbService.getSurveyById(surveyId);
     });
   }
@@ -55,7 +63,7 @@ export class SurveyView {
    * @param questionId The question being voted on.
    * @param event The toggle payload describing the answer key and checked state.
    */
-  async onVoteToggled(questionId: number, event: VoteToggleEvent): Promise<void> {
+  onVoteToggled(questionId: number, event: VoteToggleEvent): void {
     const survey = this.dbService.selectedSurvey();
     if (!survey) {
       return;
@@ -65,12 +73,97 @@ export class SurveyView {
       return;
     }
 
-    if (event.checked) {
-      await this.dbService.addVote(survey.id, questionId, event.answerKey);
+    const currentState = this.pendingVoteStates[questionId] ?? {};
+    this.pendingVoteStates[questionId] = {
+      ...currentState,
+      [event.answerKey]: event.checked,
+    };
+
+    this.voteSaveError.set('');
+  }
+
+  /**
+   * Persists all currently staged votes to the database.
+   */
+  async completeSurvey(): Promise<void> {
+    const survey = this.dbService.selectedSurvey();
+    if (!survey || this.isSavingVotes()) {
       return;
     }
 
-    await this.dbService.removeVote(survey.id, questionId, event.answerKey);
+    const stagedVotes = Object.entries(this.pendingVoteStates);
+    if (stagedVotes.length === 0) {
+      await this.router.navigate(['/']);
+      return;
+    }
+
+    this.isSavingVotes.set(true);
+    this.voteSaveError.set('');
+
+    try {
+      for (const [rawQuestionId, answerState] of stagedVotes) {
+        const questionId = Number(rawQuestionId);
+
+        for (const [rawAnswerKey, checked] of Object.entries(answerState)) {
+          const answerKey = rawAnswerKey as AnswerKey;
+
+          if (checked) {
+            await this.dbService.addVote(survey.id, questionId, answerKey);
+            continue;
+          }
+
+          await this.dbService.removeVote(survey.id, questionId, answerKey);
+        }
+      }
+
+      this.pendingVoteStates = {};
+      await this.router.navigate(['/']);
+    } catch (error) {
+      this.voteSaveError.set(error instanceof Error ? error.message : 'Votes konnten nicht gespeichert werden.');
+    } finally {
+      this.isSavingVotes.set(false);
+    }
+  }
+
+  /**
+   * Returns live chart counts by combining persisted votes with unsaved local choices.
+   *
+   * @param questionId The question id.
+   * @returns The merged answer counts shown in the chart.
+   */
+  getLiveCountsForQuestion(questionId: number): Record<AnswerKey, number> {
+    const persistedCounts = this.dbService.getVoteCountsForQuestion(questionId);
+    const pending = this.pendingVoteStates[questionId];
+
+    if (!pending) {
+      return persistedCounts;
+    }
+
+    return {
+      A: this.applyPendingVoteDelta(persistedCounts.A, pending.A),
+      B: this.applyPendingVoteDelta(persistedCounts.B, pending.B),
+      C: this.applyPendingVoteDelta(persistedCounts.C, pending.C),
+      D: this.applyPendingVoteDelta(persistedCounts.D, pending.D),
+    };
+  }
+
+  /**
+   * Applies one local pending toggle to a persisted vote count.
+   *
+   * @param count The current persisted vote count.
+   * @param pendingState The locally staged checkbox state.
+   * @returns The adjusted count for UI preview.
+   */
+  private applyPendingVoteDelta(count: number, pendingState: boolean | undefined): number {
+    if (pendingState === true) {
+      return count + 1;
+    }
+
+    if (pendingState === false) {
+      return Math.max(0, count - 1);
+    }
+
+    return count;
   }
 
   /**
