@@ -443,15 +443,12 @@ export class NewsurveyCardForm {
     if (!root) {
       return;
     }
-
     const questionForms = Array.from(root.querySelectorAll('app-question-form')) as HTMLElement[];
     const questionForm = questionForms[index] ?? null;
     const questionInput = questionForm?.querySelector('.form-bottom-question input') as HTMLInputElement | null;
-
     if (!questionInput) {
       return;
     }
-
     questionInput.value = '';
     questionInput.dispatchEvent(new Event('input', { bubbles: true }));
     delete this.questionErrors[index];
@@ -702,17 +699,14 @@ export class NewsurveyCardForm {
     deletedIndex: number,
   ): Record<number, string> {
     const nextMap: Record<number, string> = {};
-
     for (const [rawIndex, message] of Object.entries(source)) {
       const index = Number(rawIndex);
-
       if (index < deletedIndex) {
         nextMap[index] = message;
       } else if (index > deletedIndex) {
         nextMap[index - 1] = message;
       }
     }
-
     return nextMap;
   }
 

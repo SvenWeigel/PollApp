@@ -160,37 +160,49 @@ export class Supabase {
   }
 
   /**
-   * Inserts survey questions and falls back when some columns are unavailable.
+   * Inserts survey questions using the preferred schema and falls back when needed.
    *
    * @param surveyId The created survey id.
    * @param questions The questions to persist.
    */
   private async insertSurveyQuestions(surveyId: number, questions: NewQuestion[]): Promise<void> {
-    const preferredInsert = await this.supabase
-      .from('questions')
-      .insert(this.mapQuestionRows(surveyId, questions, 'question', true));
-
-    if (!preferredInsert.error) {
+    const preferredError = await this.tryInsertSurveyQuestions(surveyId, questions, 'question', true);
+    if (!preferredError) {
       return;
     }
 
-    const noMultiColumnInsert = await this.supabase
-      .from('questions')
-      .insert(this.mapQuestionRows(surveyId, questions, 'question', false));
-
-    if (!noMultiColumnInsert.error) {
+    const noMultiColumnError = await this.tryInsertSurveyQuestions(surveyId, questions, 'question', false);
+    if (!noMultiColumnError) {
       return;
     }
 
-    await this.insertSurveyQuestionsFallback(
-      surveyId,
-      questions,
-      preferredInsert.error.message || noMultiColumnInsert.error.message,
-    );
+    await this.insertSurveyQuestionsFallback(surveyId, questions, preferredError || noMultiColumnError);
   }
 
   /**
-   * Inserts questions using the fallback `questions` column name.
+   * Tries one question insert strategy and returns an error message when it fails.
+   *
+   * @param surveyId The created survey id.
+   * @param questions The questions to persist.
+   * @param questionColumn The target question column name.
+   * @param includeAllowMultipleColumn Whether to include the optional allow-multiple column.
+   * @returns `null` on success or an insert error message.
+   */
+  private async tryInsertSurveyQuestions(
+    surveyId: number,
+    questions: NewQuestion[],
+    questionColumn: 'question' | 'questions',
+    includeAllowMultipleColumn: boolean,
+  ): Promise<string | null> {
+    const { error } = await this.supabase
+      .from('questions')
+      .insert(this.mapQuestionRows(surveyId, questions, questionColumn, includeAllowMultipleColumn));
+
+    return error?.message ?? null;
+  }
+
+  /**
+   * Inserts questions using fallback column variants and throws when both fail.
    *
    * @param surveyId The created survey id.
    * @param questions The questions to persist.
@@ -201,27 +213,38 @@ export class Supabase {
     questions: NewQuestion[],
     errorMessage: string,
   ): Promise<void> {
-    const withMultiColumn = await this.supabase
-      .from('questions')
-      .insert(this.mapQuestionRows(surveyId, questions, 'questions', true));
-
-    if (!withMultiColumn.error) {
+    const withMultiColumnError = await this.tryInsertSurveyQuestions(surveyId, questions, 'questions', true);
+    if (!withMultiColumnError) {
       return;
     }
 
-    const withoutMultiColumn = await this.supabase
-      .from('questions')
-      .insert(this.mapQuestionRows(surveyId, questions, 'questions', false));
-
-    if (withoutMultiColumn.error) {
-      throw new Error(
-        `Questions konnten nicht gespeichert werden: ${withoutMultiColumn.error.message || withMultiColumn.error.message || errorMessage}`,
-      );
-    }
+    const withoutMultiColumnError = await this.tryInsertSurveyQuestions(surveyId, questions, 'questions', false);
+    this.throwQuestionsInsertFallbackError(withoutMultiColumnError, withMultiColumnError, errorMessage);
   }
 
   /**
-   * Maps UI questions into database rows for the target question column.
+   * Throws a detailed fallback insert error when no strategy succeeded.
+   *
+   * @param finalError The final fallback insert error message.
+   * @param previousError The first fallback insert error message.
+   * @param originalError The original insert error message.
+   */
+  private throwQuestionsInsertFallbackError(
+    finalError: string | null,
+    previousError: string | null,
+    originalError: string,
+  ): void {
+    if (!finalError) {
+      return;
+    }
+
+    throw new Error(
+      `Questions konnten nicht gespeichert werden: ${finalError || previousError || originalError}`,
+    );
+  }
+
+  /**
+    * Maps UI questions into database rows for the selected question column.
    *
    * @param surveyId The survey id.
    * @param questions The questions to transform.
@@ -235,22 +258,54 @@ export class Supabase {
     questionColumn: 'question' | 'questions',
     includeAllowMultipleColumn: boolean,
   ): Array<Record<string, string | number | boolean | null>> {
-    return questions.map((q) => {
-      const row: Record<string, string | number | boolean | null> = {
-        survey_id: surveyId,
-        [questionColumn]: q.question,
-        answer_A: q.answerA,
-        answer_B: q.answerB,
-        answer_C: q.answerC ?? null,
-        answer_D: q.answerD ?? null,
-      };
-
-      if (includeAllowMultipleColumn) {
-        row['allow_multiple_answers'] = q.allowMultipleAnswers ?? false;
-      }
-
-      return row;
+    return questions.map((question) => {
+      const row = this.buildBaseQuestionRow(surveyId, question, questionColumn);
+      return this.withOptionalAllowMultiple(row, question.allowMultipleAnswers, includeAllowMultipleColumn);
     });
+  }
+
+  /**
+   * Builds the base question row without optional compatibility columns.
+   *
+   * @param surveyId The survey id.
+   * @param question The question payload to map.
+   * @param questionColumn The target question column name.
+   * @returns The base mapped question row.
+   */
+  private buildBaseQuestionRow(
+    surveyId: number,
+    question: NewQuestion,
+    questionColumn: 'question' | 'questions',
+  ): Record<string, string | number | boolean | null> {
+    return {
+      survey_id: surveyId,
+      [questionColumn]: question.question,
+      answer_A: question.answerA,
+      answer_B: question.answerB,
+      answer_C: question.answerC ?? null,
+      answer_D: question.answerD ?? null,
+    };
+  }
+
+  /**
+   * Adds the optional allow-multiple column when the target schema supports it.
+   *
+   * @param row The mapped question row.
+   * @param allowMultipleAnswers The optional allow-multiple value.
+   * @param includeAllowMultipleColumn Whether the allow-multiple column should be included.
+   * @returns The final mapped question row.
+   */
+  private withOptionalAllowMultiple(
+    row: Record<string, string | number | boolean | null>,
+    allowMultipleAnswers: boolean | undefined,
+    includeAllowMultipleColumn: boolean,
+  ): Record<string, string | number | boolean | null> {
+    if (!includeAllowMultipleColumn) {
+      return row;
+    }
+
+    row['allow_multiple_answers'] = allowMultipleAnswers ?? false;
+    return row;
   }
 
   /**

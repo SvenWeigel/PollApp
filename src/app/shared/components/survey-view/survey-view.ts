@@ -28,7 +28,6 @@ export class SurveyView {
     this.route.paramMap.subscribe((params) => {
       const idParam = params.get('id');
       const surveyId = Number(idParam);
-
       if (!idParam || Number.isNaN(surveyId)) {
         this.dbService.selectedSurvey.set(null);
         this.dbService.selectedSurveyQuestions.set([]);
@@ -36,7 +35,6 @@ export class SurveyView {
         this.voteSaveError.set('');
         return;
       }
-
       this.pendingVotesByQuestion = {};
       this.voteSaveError.set('');
       this.dbService.getSurveyById(surveyId);
@@ -68,58 +66,131 @@ export class SurveyView {
     if (!survey) {
       return;
     }
-
     if (this.isPastSurvey(survey.ends)) {
       return;
     }
-
     const stagedVotes = this.pendingVotesByQuestion[questionId] ?? new Set<AnswerKey>();
-
     if (event.checked) {
       stagedVotes.add(event.answerKey);
     } else {
       stagedVotes.delete(event.answerKey);
     }
-
     this.pendingVotesByQuestion[questionId] = stagedVotes;
-
     this.voteSaveError.set('');
   }
 
   /**
-   * Persists all currently staged votes to the database.
+   * Completes the survey flow by persisting staged votes and navigating away.
    */
   async completeSurvey(): Promise<void> {
+    const survey = this.getCompletableSurvey();
+    if (!survey) {
+      return;
+    }
+
+    const stagedVotes = this.getStagedVotes();
+    if (stagedVotes.length === 0) {
+      await this.navigateToLanding();
+      return;
+    }
+
+    await this.persistStagedVotesAndNavigate(survey.id, stagedVotes);
+  }
+
+  /**
+   * Returns the current survey when voting can be completed.
+   *
+   * @returns The selected survey or `null` when completion is blocked.
+   */
+  private getCompletableSurvey(): { id: number } | null {
     const survey = this.dbService.selectedSurvey();
     if (!survey || this.isSavingVotes()) {
-      return;
+      return null;
     }
 
-    const stagedVotes = Object.entries(this.pendingVotesByQuestion);
-    if (stagedVotes.length === 0) {
-      await this.router.navigate(['/']);
-      return;
-    }
+    return survey;
+  }
 
-    this.isSavingVotes.set(true);
-    this.voteSaveError.set('');
+  /**
+   * Returns staged votes as entry tuples grouped by question id.
+   *
+   * @returns The staged vote entries.
+   */
+  private getStagedVotes(): Array<[string, Set<AnswerKey>]> {
+    return Object.entries(this.pendingVotesByQuestion);
+  }
+
+  /**
+   * Persists staged votes, clears local state, and navigates to landing on success.
+   *
+   * @param surveyId The active survey id.
+   * @param stagedVotes The staged vote entries to persist.
+   */
+  private async persistStagedVotesAndNavigate(
+    surveyId: number,
+    stagedVotes: Array<[string, Set<AnswerKey>]>,
+  ): Promise<void> {
+    this.startVoteSave();
 
     try {
-      for (const [rawQuestionId, stagedAnswerKeys] of stagedVotes) {
-        const questionId = Number(rawQuestionId);
-
-        for (const answerKey of stagedAnswerKeys) {
-          await this.dbService.addVote(survey.id, questionId, answerKey);
-        }
-      }
-
+      await this.saveStagedVotes(surveyId, stagedVotes);
       this.pendingVotesByQuestion = {};
-      await this.router.navigate(['/']);
+      await this.navigateToLanding();
     } catch (error) {
-      this.voteSaveError.set(error instanceof Error ? error.message : 'Votes konnten nicht gespeichert werden.');
+      this.setVoteSaveError(error);
     } finally {
-      this.isSavingVotes.set(false);
+      this.endVoteSave();
     }
+  }
+
+  /**
+   * Persists staged vote entries for all question groups.
+   *
+   * @param surveyId The active survey id.
+   * @param stagedVotes The staged vote entries to persist.
+   */
+  private async saveStagedVotes(
+    surveyId: number,
+    stagedVotes: Array<[string, Set<AnswerKey>]>,
+  ): Promise<void> {
+    for (const [rawQuestionId, stagedAnswerKeys] of stagedVotes) {
+      const questionId = Number(rawQuestionId);
+
+      for (const answerKey of stagedAnswerKeys) {
+        await this.dbService.addVote(surveyId, questionId, answerKey);
+      }
+    }
+  }
+
+  /**
+   * Initializes save state before vote persistence.
+   */
+  private startVoteSave(): void {
+    this.isSavingVotes.set(true);
+    this.voteSaveError.set('');
+  }
+
+  /**
+   * Resets save state after vote persistence finishes.
+   */
+  private endVoteSave(): void {
+    this.isSavingVotes.set(false);
+  }
+
+  /**
+   * Stores a human-readable vote save error message.
+   *
+   * @param error The thrown error value.
+   */
+  private setVoteSaveError(error: unknown): void {
+    this.voteSaveError.set(error instanceof Error ? error.message : 'Votes konnten nicht gespeichert werden.');
+  }
+
+  /**
+   * Navigates to the landing page.
+   */
+  private async navigateToLanding(): Promise<void> {
+    await this.router.navigate(['/']);
   }
 
   /**
