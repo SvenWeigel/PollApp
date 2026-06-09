@@ -5,6 +5,8 @@ import { QuestionForm } from "../question-form/question-form";
 import { Buttons } from "../buttons/buttons";
 import { NewQuestion, Supabase } from '../../../supabase';
 import type { AllowMultipleChangedEvent } from '../question-form/question-form';
+import type { SurveyPayload } from '../../interface/survey-payload.interface';
+import type { PublishSurveyContext } from '../../interface/publish-survey-context.interface';
 
 @Component({
   selector: 'app-newsurvey-card-form',
@@ -111,26 +113,63 @@ export class NewsurveyCardForm {
    */
   async publishSurvey(): Promise<boolean> {
     this.clearAllErrors();
-
-    const root = this.getFormRootOrFail();
-    if (!root) {
+    const publishContext = this.prepareSurveyPublishContext();
+    if (!publishContext) {
       return false;
     }
 
-    const payload = this.buildSurveyPayload(root);
-    if (!this.validateHeadline(payload.headline)) {
-      return false;
-    }
-
-    this.validateRequiredFirstQuestionFields(root);
-
-    if (this.hasInlineErrors()) {
+    const { root, payload } = publishContext;
+    if (!this.validateSurveyPayload(root, payload.headline)) {
       return false;
     }
 
     const collectedQuestions = this.collectQuestions(root);
-    if (!this.ensureQuestionsCollected(collectedQuestions)) {
+    return this.persistCollectedSurvey(payload, collectedQuestions);
+  }
+
+  /**
+   * Builds the root and payload needed for survey publishing.
+   *
+   * @returns The publish context or `null` when the form root is missing.
+   */
+  private prepareSurveyPublishContext(): PublishSurveyContext | null {
+    const root = this.getFormRootOrFail();
+    if (!root) {
+      return null;
+    }
+
+    return { root, payload: this.buildSurveyPayload(root) };
+  }
+
+  /**
+   * Validates payload and required question fields before collecting questions.
+   *
+   * @param root The form root element.
+   * @param headline The current survey headline.
+   * @returns True when publish preconditions are met.
+   */
+  private validateSurveyPayload(root: HTMLElement, headline: string): boolean {
+    if (!this.validateHeadline(headline)) {
       return false;
+    }
+
+    this.validateRequiredFirstQuestionFields(root);
+    return !this.hasInlineErrors();
+  }
+
+  /**
+   * Persists a survey after question collection validation.
+   *
+   * @param payload The survey payload.
+   * @param collectedQuestions The collected survey questions.
+   * @returns True when persistence succeeds.
+   */
+  private persistCollectedSurvey(
+    payload: SurveyPayload,
+    collectedQuestions: NewQuestion[],
+  ): Promise<boolean> {
+    if (!this.ensureQuestionsCollected(collectedQuestions)) {
+      return Promise.resolve(false);
     }
 
     return this.saveSurvey(payload, collectedQuestions);
@@ -222,12 +261,7 @@ export class NewsurveyCardForm {
    * @param root The form root element.
    * @returns The payload object used for survey creation.
    */
-  private buildSurveyPayload(root: HTMLElement): {
-    headline: string;
-    description: string;
-    ends: string;
-    category: string;
-  } {
+  private buildSurveyPayload(root: HTMLElement): SurveyPayload {
     const headline = this.readInputValue(root, '.form-top--left app-input-field:first-of-type input');
     const description = this.readTextareaValue(root, '.form-top--right textarea');
     const category = this.readCategory(root);
@@ -357,7 +391,7 @@ export class NewsurveyCardForm {
    * @returns True when saving succeeds.
    */
   private async saveSurvey(
-    payload: { headline: string; description: string; ends: string; category: string },
+    payload: SurveyPayload,
     collectedQuestions: NewQuestion[],
   ): Promise<boolean> {
     try {
