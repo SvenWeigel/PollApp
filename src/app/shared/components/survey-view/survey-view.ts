@@ -19,7 +19,7 @@ export class SurveyView {
   readonly areResultsVisible = signal(true);
   readonly isSavingVotes = signal(false);
   readonly voteSaveError = signal('');
-  private pendingVoteStates: Record<number, Partial<Record<AnswerKey, boolean>>> = {};
+  private pendingVotesByQuestion: Record<number, Set<AnswerKey>> = {};
 
   /**
    * Loads the survey and its questions based on the current route parameter.
@@ -32,12 +32,12 @@ export class SurveyView {
       if (!idParam || Number.isNaN(surveyId)) {
         this.dbService.selectedSurvey.set(null);
         this.dbService.selectedSurveyQuestions.set([]);
-        this.pendingVoteStates = {};
+        this.pendingVotesByQuestion = {};
         this.voteSaveError.set('');
         return;
       }
 
-      this.pendingVoteStates = {};
+      this.pendingVotesByQuestion = {};
       this.voteSaveError.set('');
       this.dbService.getSurveyById(surveyId);
     });
@@ -73,11 +73,15 @@ export class SurveyView {
       return;
     }
 
-    const currentState = this.pendingVoteStates[questionId] ?? {};
-    this.pendingVoteStates[questionId] = {
-      ...currentState,
-      [event.answerKey]: event.checked,
-    };
+    const stagedVotes = this.pendingVotesByQuestion[questionId] ?? new Set<AnswerKey>();
+
+    if (event.checked) {
+      stagedVotes.add(event.answerKey);
+    } else {
+      stagedVotes.delete(event.answerKey);
+    }
+
+    this.pendingVotesByQuestion[questionId] = stagedVotes;
 
     this.voteSaveError.set('');
   }
@@ -91,7 +95,7 @@ export class SurveyView {
       return;
     }
 
-    const stagedVotes = Object.entries(this.pendingVoteStates);
+    const stagedVotes = Object.entries(this.pendingVotesByQuestion);
     if (stagedVotes.length === 0) {
       await this.router.navigate(['/']);
       return;
@@ -101,22 +105,15 @@ export class SurveyView {
     this.voteSaveError.set('');
 
     try {
-      for (const [rawQuestionId, answerState] of stagedVotes) {
+      for (const [rawQuestionId, stagedAnswerKeys] of stagedVotes) {
         const questionId = Number(rawQuestionId);
 
-        for (const [rawAnswerKey, checked] of Object.entries(answerState)) {
-          const answerKey = rawAnswerKey as AnswerKey;
-
-          if (checked) {
-            await this.dbService.addVote(survey.id, questionId, answerKey);
-            continue;
-          }
-
-          await this.dbService.removeVote(survey.id, questionId, answerKey);
+        for (const answerKey of stagedAnswerKeys) {
+          await this.dbService.addVote(survey.id, questionId, answerKey);
         }
       }
 
-      this.pendingVoteStates = {};
+      this.pendingVotesByQuestion = {};
       await this.router.navigate(['/']);
     } catch (error) {
       this.voteSaveError.set(error instanceof Error ? error.message : 'Votes konnten nicht gespeichert werden.');
@@ -133,37 +130,18 @@ export class SurveyView {
    */
   getLiveCountsForQuestion(questionId: number): Record<AnswerKey, number> {
     const persistedCounts = this.dbService.getVoteCountsForQuestion(questionId);
-    const pending = this.pendingVoteStates[questionId];
+    const stagedVotes = this.pendingVotesByQuestion[questionId];
 
-    if (!pending) {
+    if (!stagedVotes || stagedVotes.size === 0) {
       return persistedCounts;
     }
 
     return {
-      A: this.applyPendingVoteDelta(persistedCounts.A, pending.A),
-      B: this.applyPendingVoteDelta(persistedCounts.B, pending.B),
-      C: this.applyPendingVoteDelta(persistedCounts.C, pending.C),
-      D: this.applyPendingVoteDelta(persistedCounts.D, pending.D),
+      A: persistedCounts.A + Number(stagedVotes.has('A')),
+      B: persistedCounts.B + Number(stagedVotes.has('B')),
+      C: persistedCounts.C + Number(stagedVotes.has('C')),
+      D: persistedCounts.D + Number(stagedVotes.has('D')),
     };
-  }
-
-  /**
-   * Applies one local pending toggle to a persisted vote count.
-   *
-   * @param count The current persisted vote count.
-   * @param pendingState The locally staged checkbox state.
-   * @returns The adjusted count for UI preview.
-   */
-  private applyPendingVoteDelta(count: number, pendingState: boolean | undefined): number {
-    if (pendingState === true) {
-      return count + 1;
-    }
-
-    if (pendingState === false) {
-      return Math.max(0, count - 1);
-    }
-
-    return count;
   }
 
   /**
