@@ -30,6 +30,7 @@
           #nativeDateInput
           class="native-date-input"
           type="date"
+          [min]="minSelectableDate"
           (change)="onNativeDateChange($event)"
         />
       </div>

@@ -25,6 +25,15 @@ export class NewsurveyCardForm {
   answerBErrors: Record<number, string> = {};
 
   /**
+   * Returns the minimum selectable raw date for the native date input.
+   *
+   * Prevents selecting calendar days that lie in the past.
+   */
+  get minSelectableDate(): string {
+    return this.getTodayRawDate();
+  }
+
+  /**
    * Opens the native date picker when available and falls back to focusing the input.
    */
   openDatePicker(): void {
@@ -45,12 +54,20 @@ export class NewsurveyCardForm {
   /**
    * Updates the displayed end date after the native date input changes.
    *
+   * Any past date value is normalized to today's date.
+   *
    * @param event The change event emitted by the date input.
    */
   onNativeDateChange(event: Event): void {
     const target = event.target as HTMLInputElement | null;
     const rawValue = target?.value ?? '';
-    this.endsValue = rawValue ? this.formatDateForDisplay(rawValue) : '';
+    const normalizedValue = this.clampDateToMinSelectable(rawValue);
+
+    if (target && normalizedValue !== rawValue) {
+      target.value = normalizedValue;
+    }
+
+    this.endsValue = normalizedValue ? this.formatDateForDisplay(normalizedValue) : '';
   }
 
   /**
@@ -578,6 +595,21 @@ export class NewsurveyCardForm {
     }
 
     return `${year}.${month}.${day}`;
+  }
+
+  /**
+   * Ensures that a raw date string does not point to a day before today.
+   *
+   * @param rawDate The raw `YYYY-MM-DD` value to validate.
+   * @returns The same date when valid or today's date when it is in the past.
+   */
+  private clampDateToMinSelectable(rawDate: string): string {
+    if (!rawDate) {
+      return '';
+    }
+
+    const minDate = this.minSelectableDate;
+    return rawDate < minDate ? minDate : rawDate;
   }
 
   /**
