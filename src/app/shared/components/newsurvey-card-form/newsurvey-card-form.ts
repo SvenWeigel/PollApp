@@ -92,12 +92,13 @@ export class NewsurveyCardForm {
    * @param questionId The unique id of the question to remove.
    */
   deleteQuestion(questionId: number): void {
-    if (this.questions.length <= 1) {
+    const index = this.questions.indexOf(questionId);
+    if (index < 0) {
       return;
     }
 
-    const index = this.questions.indexOf(questionId);
-    if (index < 0) {
+    if (this.questions.length <= 1) {
+      this.clearQuestionInputAtIndex(index);
       return;
     }
 
@@ -430,6 +431,30 @@ export class NewsurveyCardForm {
 
       input.value = '';
     }
+  }
+
+  /**
+   * Clears the question text input for one rendered question card.
+   *
+   * @param index The rendered question index.
+   */
+  private clearQuestionInputAtIndex(index: number): void {
+    const root = this.formRoot?.nativeElement;
+    if (!root) {
+      return;
+    }
+
+    const questionForms = Array.from(root.querySelectorAll('app-question-form')) as HTMLElement[];
+    const questionForm = questionForms[index] ?? null;
+    const questionInput = questionForm?.querySelector('.form-bottom-question input') as HTMLInputElement | null;
+
+    if (!questionInput) {
+      return;
+    }
+
+    questionInput.value = '';
+    questionInput.dispatchEvent(new Event('input', { bubbles: true }));
+    delete this.questionErrors[index];
   }
 
   /**
