@@ -1,4 +1,4 @@
-<section class="question-form">
+<form class="question-form" (submit)="$event.preventDefault()" novalidate>
   <div class="form-top-question">
     <span>{{ questionNumber }}. Question</span>
     <button type="button" (click)="delete()"><img src="../assets/Delete.svg" alt="Delete" /></button>
@@ -34,4 +34,4 @@
       }
     </div>
   </div>
-</section>
+</form>
